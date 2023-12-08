@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/test', [\App\Http\Controllers\ProductController::class, 'test']);
+Route::get('/', [\App\Http\Controllers\HomeController::class,'getProduct']);
+// Route::get('/admin', [\App\Http\Controllers\HomeController::class, 'admin']);
+
+Route::get('/login', [\App\Http\Controllers\HomeController::class, 'register']);
+Route::get('/admin', 'HomeController@admin');

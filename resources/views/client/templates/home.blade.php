@@ -1,15 +1,16 @@
 @extends('client.layout.layout')
 @section('content')
 <div id="grid">
+    @foreach ($items as $product)
     <div class="product">
-    <div class="info-large">
+         {{-- <div class="info-large">
         	<h4>PRINTED DRESS</h4>
             <div class="sku">
             	PRODUCT SKU: <strong>89356</strong>
             </div>
              
             <div class="price-big">
-            	<span>$43</span> $39
+            	<span>$43</span>
             </div>
              
             <h3>COLORS</h3>
@@ -34,7 +35,7 @@
             
             <button class="add-cart-large">Add To Cart</button>                          
                          
-        </div>
+        </div>  --}}
         <div class="make3D">
             <div class="product-front">
                 <div class="shadow"></div>
@@ -44,10 +45,9 @@
                 <div class="view_gallery">View gallery</div>
                 <div class="stats">        	
                     <div class="stats-container">
-                        <span class="product_price">$39</span>
-                        <span class="product_name">PRINTED DRESS</span>    
-                        <p>Summer dress</p>                                            
-                        
+                        <span class="product_price">${{$product->price}}</span>
+                        <span class="product_name">{{ $product->name }}</span>    
+                        <p>{{$product->description}}</p>                                            
                         <div class="product-options">
                         <strong>SIZES</strong>
                         <span>XS, S, M, L, XL, XXL</span>
@@ -62,7 +62,6 @@
                     </div>                         
                 </div>
             </div>
-            
             <div class="product-back">
                 <div class="shadow"></div>
                 <div class="carousel">
@@ -87,6 +86,7 @@
                 </div>
             </div>	  
         </div>	
-    </div>    
+    </div>   
+    @endforeach 
 </div>
 @endsection
