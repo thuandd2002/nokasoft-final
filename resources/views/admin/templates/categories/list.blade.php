@@ -78,11 +78,12 @@
                                     </i>
                                     Edit
                                 </a>
-                                <a onclick="return myFunction()" class="btn btn-danger btn-sm" href="{{route('route_admin_category_delete',['id'=>$item->id])}}">
-                                    <i class="fas fa-trash">
-                                    </i>
+                                {{-- <a onclick="return myFunction()" class="btn btn-danger btn-sm" href="{{route('route_admin_category_delete',['id'=>$item->id])}}">
+                                    <i class="fas fa-trash"></i>
                                     Delete
-                                </a>
+                                </a> --}}
+                                <button class="btn btn-danger btn-sm" id="del" data-categories-id="{{ $item->id }}">Delete</button>
+                                @csrf
                             </td>
                         </tr>
                     @endforeach
@@ -98,4 +99,33 @@
         if(!confirm("Are You Sure to delete this"))
         event.preventDefault();
     }
+</script>
+<script>
+    $(document).ready(function () {
+        $('#del').on('click', function () {
+            var categoriesId = $(this).data('categories-id');
+
+            if (confirm('Are you sure you want to delete this categories?')) {
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/admin/categories/delete/' + categoriesId,
+                    data: {
+                        '_token': '{{ csrf_token() }}',
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            $(this).closest('tr').remove();
+                            // alert('Categories deleted successfully');
+                            window.location.reload();
+                        }else {
+                            alert('Failed to delete user');
+                        }
+                    },
+                    error: function (data) {
+                        alert('Failed to delete Categories');
+                    }
+                });
+            }
+        });
+    });
 </script>
