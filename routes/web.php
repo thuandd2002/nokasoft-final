@@ -30,5 +30,7 @@ Route::prefix('admin')-> middleware(['auth.admin.middleware'])->group(
         Route::post('/categories/update/{id}', 'CategoriesController@update')
             ->name('route_admin_category_update');
         Route::get('categories/delete/{id}', 'CategoriesController@delete')->name('route_admin_category_delete');
+        //products
+        Route::get('product/list', 'CategoriesController@list')->name('route_admin_category_list');
     }
 );
