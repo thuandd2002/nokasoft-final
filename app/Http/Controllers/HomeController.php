@@ -43,7 +43,7 @@ class HomeController extends Controller
         ];
         $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()) {
-            return redirect('login')->withErrors($validator);
+            return redirect('admin/login')->withErrors($validator);
         } else {
             $email = $request->input('email');
             $password = $request->input('password');
@@ -51,11 +51,10 @@ class HomeController extends Controller
                 return redirect('admin');
             } else {
                 Session::flash('error', 'Email hoặc mật khẩu k đúng');
-                return redirect('login');
+                return redirect('admin/login');
             }
         }
     }
-
     public function getLogout()
     {
         Auth::logout();

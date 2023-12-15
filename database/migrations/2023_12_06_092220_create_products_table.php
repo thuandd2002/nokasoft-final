@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('images')->nullable();
             $table->integer('price');
             $table->text('description');
-            $table->timestamps();
+            $table->timestamp('created_at');
             $table->softDeletes();
         });
     }
