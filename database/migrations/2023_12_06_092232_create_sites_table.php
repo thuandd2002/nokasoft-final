@@ -11,7 +11,7 @@ class CreateSitesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('product_id');
             $table->string('name');
-            $table->timestamps();
+            $table->timestamp('created_at');
             $table->softDeletes();
             $table->foreign('product_id')->references('id')->on('products');
         });
