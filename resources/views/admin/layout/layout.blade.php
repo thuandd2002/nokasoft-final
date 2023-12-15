@@ -126,12 +126,13 @@
             </div>
           </div>
           <!-- ./col -->
+          
         </div>
-        @yield('content')
         <!-- /.row -->
         <!-- Main row -->
         <!-- /.row (main row) -->
       </div><!-- /.container-fluid -->
+      @yield('col')
     </section>
     <!-- /.content -->
   </div>
