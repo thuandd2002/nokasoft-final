@@ -36,6 +36,19 @@ class CategoriesController extends Controller
         return redirect()->route('route_admin_category_list');
     }
     function delete($id, Request $request) {
+        // dd(123);
+        // if ($request->ajax()) {
+        //     $categories = Categories::find($id);
+
+        //     if ($categories) {
+        //         $categories->delete();
+        //         return response()->json(['success' => true]);
+        //     } else {
+        //         return response()->json(['error' => 'categories not found'], 404);
+        //     }
+        // }
+
+        // return abort(404);
         $categories = Categories::find($id);
         $categories->delete();
         Session::flash('success', ' Delete record #' . $categories->id . ' successfully');

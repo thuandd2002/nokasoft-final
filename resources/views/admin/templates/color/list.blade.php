@@ -11,7 +11,16 @@
     @endif
     <div class="">
         <div class="card-header">
-            <h3 class="card-title">List Categories</h3>
+            <h3 class="card-title">Projects</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
         </div>
         <div class="card-body ">
             <table class="table table-striped projects">
@@ -92,10 +101,10 @@
     </div>
 @endsection
 
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     function myFunction() {
         if(!confirm("Are You Sure to delete this"))
         event.preventDefault();
     }
-</script>
+   </script>
+  

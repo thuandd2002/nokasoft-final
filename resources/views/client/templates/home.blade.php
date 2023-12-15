@@ -1,7 +1,7 @@
 @extends('client.layout.layout')
 @section('content')
 <div id="grid">
-    @foreach ($items as $product)
+    @foreach ($itemsProdcuts as $product)
     <div class="product">
          {{-- <div class="info-large">
         	<h4>PRINTED DRESS</h4>
