@@ -34,24 +34,19 @@
         </div>
     @endif
     <div class="col-md-6">
-        <form action="{{ route('route_admin_category_update',['id'=>request()->route('id')]) }}" method="POST">
+        <form action="{{ route('route_admin_sizes_update',['id'=>request()->route('id')]) }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="exampleInputEmail1">Name</label>
                 <input type="text" value="{{$items->name}}" class="form-control" id="exampleInputEmail1" placeholder="Enter Name" name="name">
             </div>
-            {{-- <div class="form-group">
-                <label for="exampleInputFile">File input</label>
-                <div class="input-group">
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="exampleInputFile">
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                    </div>
-                    <div class="input-group-append">
-                        <span class="input-group-text">Upload</span>
-                    </div>
-                </div>
-            </div> --}}
+            <div class="form-group">
+                <label for="Image">Image</label>
+                <li class="list-inline-item">
+                    <img alt="Avatar" class="img-fluid" src="{{asset('storage/'.$items->image)}}">
+                </li>
+                <input type="file" class="form-control" name="image">
+            </div>
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Update Categories</button>
             </div>

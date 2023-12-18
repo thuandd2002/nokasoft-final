@@ -63,7 +63,7 @@
                             <td>
                                 <ul class="list-inline">
                                     <li class="list-inline-item">
-                                        <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar.png">
+                                        <img alt="Avatar" class="img-fluid" src="{{asset('storage/'.$item->image)}}">
                                     </li>
                                 </ul>
                             </td>
@@ -82,12 +82,12 @@
                             </td>
                             <td class="project-actions text-right">
                                 <a class="btn btn-info btn-sm"
-                                    href="{{ route('route_admin_category_detail', ['id' => $item->id]) }}">
+                                    href="{{ route('route_admin_colors_detail', ['id' => $item->id]) }}">
                                     <i class="fas fa-pencil-alt">
                                     </i>
                                     Edit
                                 </a>
-                                <a onclick="return myFunction()" class="btn btn-danger btn-sm" href="{{route('route_admin_category_delete',['id'=>$item->id])}}">
+                                <a onclick="return myFunction()" class="btn btn-danger btn-sm" href="{{route('route_admin_colors_delete',['id'=>$item->id])}}">
                                     <i class="fas fa-trash">
                                     </i>
                                     Delete
@@ -106,5 +106,4 @@
         if(!confirm("Are You Sure to delete this"))
         event.preventDefault();
     }
-   </script>
-  
+</script>

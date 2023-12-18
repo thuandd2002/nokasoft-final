@@ -32,24 +32,16 @@
         </div>
     @endif
     <div class="col-md-6">
-        <form action="{{ route('route_admin_category_add') }}" method="POST">
+        <form action="{{ route('route_admin_category_add') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="exampleInputEmail1">Name</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter Name" name="name">
+                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter Name" name="name" enctype="multipart/form-data" >
             </div>
-            {{-- <div class="form-group">
-                <label for="exampleInputFile">File input</label>
-                <div class="input-group">
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="exampleInputFile">
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                    </div>
-                    <div class="input-group-append">
-                        <span class="input-group-text">Upload</span>
-                    </div>
-                </div>
-            </div> --}}
+            <div class="form-group">
+                <label for="Image">Image</label>
+                <input type="file" class="form-control" name="image">
+            </div>
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Add Categories</button>
             </div>

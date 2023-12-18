@@ -54,7 +54,7 @@
                             <td>
                                 <ul class="list-inline">
                                     <li class="list-inline-item">
-                                        <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar.png">
+                                        <img alt="Avatar" class="img-fluid" src="{{asset('storage/'.$item->image)}}">
                                     </li>
                                 </ul>
                             </td>
@@ -82,7 +82,7 @@
                                     <i class="fas fa-trash"></i>
                                     Delete
                                 </a> --}}
-                                <button class="btn btn-danger btn-sm" id="del" data-categories-id="{{ $item->id }}">Delete</button>
+                                <button class="btn btn-danger btn-sm btn-del" id="del" data-categories-id="{{ $item->id }}">Delete</button>
                                 @csrf
                             </td>
                         </tr>
@@ -102,7 +102,7 @@
 </script>
 <script>
     $(document).ready(function () {
-        $('#del').on('click', function () {
+        $('.btn-del').on('click', function () {
             var categoriesId = $(this).data('categories-id');
 
             if (confirm('Are you sure you want to delete this categories?')) {

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Categories;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class CategoriesController extends Controller
 {
@@ -18,6 +19,10 @@ class CategoriesController extends Controller
             $param = [];
             $param['cols'] = $request->post();
             unset($param['cols']['_token']);
+            if ($request->hasFile('image')&& $request->file('image')->isValid()){
+                $image = $request->file('image')->store('uploads', 'public');
+                $param['cols']['image'] = $image;
+            }
             DB::table('categories')->insert($param);
             Session::flash('success', 'Category added successfully');
             return redirect()->route('route_admin_category_list');
@@ -30,6 +35,10 @@ class CategoriesController extends Controller
     }
     function update($id, Request $request){ 
         $categories = Categories::find($id);
+        if ($request->hasFile('image')&& $request->file('image')->isValid()){
+            $image = $request->file('image')->store('uploads', 'public');
+            $categories->image = $image;
+        }
         $categories->name = $request->input('name');
         $categories->update();
         Session::flash('success', 'Update record #' . $categories->id . ' successfully');
