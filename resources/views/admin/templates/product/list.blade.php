@@ -11,7 +11,16 @@
     @endif
     <div class="">
         <div class="card-header">
-            <h3 class="card-title">List Categories</h3>
+            <h3 class="card-title">Projects</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
         </div>
         <div class="card-body ">
             <table class="table table-striped projects">
@@ -54,7 +63,7 @@
                             <td>
                                 <ul class="list-inline">
                                     <li class="list-inline-item">
-                                        <img alt="Avatar" class="img-fluid" src="{{asset('storage/'.$item->image)}}">
+                                        <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar.png">
                                     </li>
                                 </ul>
                             </td>
@@ -78,12 +87,11 @@
                                     </i>
                                     Edit
                                 </a>
-                                {{-- <a onclick="return myFunction()" class="btn btn-danger btn-sm" href="{{route('route_admin_category_delete',['id'=>$item->id])}}">
-                                    <i class="fas fa-trash"></i>
+                                <a onclick="return myFunction()" class="btn btn-danger btn-sm" href="{{route('route_admin_category_delete',['id'=>$item->id])}}">
+                                    <i class="fas fa-trash">
+                                    </i>
                                     Delete
-                                </a> --}}
-                                <button class="btn btn-danger btn-sm btn-del" id="del" data-categories-id="{{ $item->id }}">Delete</button>
-                                @csrf
+                                </a>
                             </td>
                         </tr>
                     @endforeach
@@ -93,39 +101,10 @@
     </div>
 @endsection
 
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     function myFunction() {
         if(!confirm("Are You Sure to delete this"))
         event.preventDefault();
     }
-</script>
-<script>
-    $(document).ready(function () {
-        $('.btn-del').on('click', function () {
-            var categoriesId = $(this).data('categories-id');
-
-            if (confirm('Are you sure you want to delete this categories?')) {
-                $.ajax({
-                    type: 'DELETE',
-                    url: '/admin/categories/delete/' + categoriesId,
-                    data: {
-                        '_token': '{{ csrf_token() }}',
-                    },
-                    success: function (data) {
-                        if (data.success) {
-                            $(this).closest('tr').remove();
-                            // alert('Categories deleted successfully');
-                            window.location.reload();
-                        }else {
-                            alert('Failed to delete user');
-                        }
-                    },
-                    error: function (data) {
-                        alert('Failed to delete Categories');
-                    }
-                });
-            }
-        });
-    });
-</script>
+   </script>
+  

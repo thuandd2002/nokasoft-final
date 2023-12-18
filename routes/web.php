@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [\App\Http\Controllers\HomeController::class,'getProduct']);
+Route::get('/', [\App\Http\Controllers\HomeController::class,'index']);
 // Route::get('/admin', [\App\Http\Controllers\HomeController::class, 'admin']);
 
 Route::get('/admin/login', 'HomeController@login')->name('admin/login');
@@ -29,6 +29,23 @@ Route::prefix('admin')-> middleware(['auth.admin.middleware'])->group(
         Route::get('categories/detail/{id}', 'CategoriesController@detail')->name('route_admin_category_detail');
         Route::post('/categories/update/{id}', 'CategoriesController@update')
             ->name('route_admin_category_update');
-        Route::get('categories/delete/{id}', 'CategoriesController@delete')->name('route_admin_category_delete');
+        Route::delete('/categories/delete/{id}', 'CategoriesController@delete')->name('route_admin_category_delete');
+        //products
+        Route::get('product/list', 'CategoriesController@list')->name('route_admin_products_list');
+        //endproducts
+        //sizes
+        Route::get('sizes/list', 'SizesController@list')->name('route_admin_sizes_list');
+        Route::match(['get', 'post'], 'sizes/add', 'SizesController@add')->name('route_admin_sizes_add');
+        Route::get('sizes/detail/{id}', 'SizesController@detail')->name('route_admin_sizes_detail');
+        Route::post('/sizes/update/{id}', 'SizesController@update')
+            ->name('route_admin_sizes_update');
+        Route::get('/sizes/delete/{id}', 'SizesController@delete')->name('route_admin_sizes_delete');
+        //c
+        Route::get('colors/list', 'ColorsController@list')->name('route_admin_colors_list');
+        Route::match(['get', 'post'], 'colors/add', 'ColorsController@add')->name('route_admin_colors_add');
+        Route::get('colors/detail/{id}', 'ColorsController@detail')->name('route_admin_colors_detail');
+        Route::post('/colors/update/{id}', 'ColorsController@update')
+            ->name('route_admin_colors_update');
+        Route::get('/colors/delete/{id}', 'ColorsController@delete')->name('route_admin_colors_delete');
     }
 );

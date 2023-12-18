@@ -80,7 +80,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/charts/chartjs.html" class="nav-link">
+                <a href="{{route('route_admin_products_list')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>List Products</p>
                 </a>
@@ -97,7 +97,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/UI/general.html" class="nav-link">
+                <a href="{{route('route_admin_sizes_list')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>List Sizes</p>
                 </a>
@@ -114,7 +114,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/forms/general.html" class="nav-link">
+                <a href="{{route('route_admin_colors_list')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>List Colors</p>
                 </a>

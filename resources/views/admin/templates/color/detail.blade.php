@@ -34,7 +34,7 @@
         </div>
     @endif
     <div class="col-md-6">
-        <form action="{{ route('route_admin_category_update',['id'=>request()->route('id')]) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('route_admin_colors_update',['id'=>request()->route('id')]) }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="exampleInputEmail1">Name</label>

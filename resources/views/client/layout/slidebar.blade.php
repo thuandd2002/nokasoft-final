@@ -3,25 +3,32 @@
     <div id="cart">
     	<span class="empty">No items in cart.</span>       
     </div>
-    
+  
     <h3>CATEGORIES</h3>
     <div class="checklist categories">
     	<ul>
-        	<li><a href=""><span></span>New Arivals</a></li>
+            @foreach ($itemsCategories as $item)
+            <li><a href=""><span></span>{{$item->name}}</a></li>
+            @endforeach
+        	
         </ul>
     </div>
     
     <h3>COLORS</h3>
     <div class="checklist colors">
     	<ul>
-        	<li><a href=""><span></span>Beige</a></li>
+            @foreach ($itemsColors as $item)
+            <li><a href=""><span></span>{{$item->name}}</a></li>
+            @endforeach
         </ul>
     </div>
     
     <h3>SIZES</h3>
     <div class="checklist sizes">
     	<ul>
-        	<li><a href=""><span></span>XS</a></li>
+            @foreach ($itemsSizes as $item)
+            <li><a href=""><span></span>{{$item->name}}</a></li>
+            @endforeach
         </ul>
     </div>
     

@@ -7,6 +7,12 @@
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <script src="
+  https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js
+  "></script>
+  <link href="
+  https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css
+  " rel="stylesheet">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{asset('default/plugins/fontawesome-free/css/all.min.css')}}">
   <!-- Ionicons -->

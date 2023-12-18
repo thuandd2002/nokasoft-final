@@ -7,13 +7,38 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use \App\Models\Products;
+use \App\Models\Categories;
+use \App\Models\Sizes;
+use \App\Models\Colors;
 
 class HomeController extends Controller
 {
-    function getProduct()
+
+    protected $_products;
+    protected $_categories;
+    protected $_colors;
+    protected $_sizes;
+
+    function __construct(Products $products, Categories $categories, Colors $colors, Sizes $sizes)
     {
-        $items = Products::all();
-        return view('client.templates.home', ['items' => $items]);
+        $this->_products = $products;
+        $this->_categories = $categories;
+        $this->_colors = $colors;
+        $this->_sizes = $sizes;
+    }
+    function index ()
+    {
+        $colectionProduct = $this->_products->get();
+        $colectionCategories = $this->_categories->get();
+        $colectionSizes = $this->_sizes->get();
+        $colectionColors = $this->_colors->get();
+        return view('client.templates.home',
+         ['itemsProdcuts' => $colectionProduct,
+         'itemsCategories' => $colectionCategories,
+         'itemsSizes' => $colectionSizes,
+         'itemsColors' => $colectionColors
+         ]
+        );
     }
     function admin()
     {
