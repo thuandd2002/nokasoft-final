@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AdminAuthenticate;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [\App\Http\Controllers\HomeController::class,'index']);
 // Route::get('/admin', [\App\Http\Controllers\HomeController::class, 'admin']);
 
-Route::get('/admin/login', 'HomeController@login')->name('admin/login');
+Route::get('/admin/login', 'HomeController@login')->name('admin_login');
 Route::post('/admin/login', 'HomeController@postLogin')->name('admin/login');
 Route::get('/admin', 'HomeController@admin');
 Route::get('/admin/logout', "HomeController@getLogout")->name('admin/logout');
@@ -49,3 +50,11 @@ Route::prefix('admin')-> middleware(['auth.admin.middleware'])->group(
         Route::get('/colors/delete/{id}', 'ColorsController@delete')->name('route_admin_colors_delete');
     }
 );
+
+//forgot_password admin
+        Route::prefix('admin')->group(
+        function (){
+            Route::match(['get','post'],'forgot-password','AdminController@forgotPassword')->name('route_admin_forgot_password');
+            Route::match(['get','post'],'change-password/{id}/{remember_token}/','AdminController@changePassword')->name('route_admin_change_password');
+        }
+        );

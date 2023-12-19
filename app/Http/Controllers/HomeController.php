@@ -45,14 +45,14 @@ class HomeController extends Controller
         if (Auth::check()) {
             return view('admin.layout.layout');
         } else {
-            return view('auth.login');
+            return view('admin.auth.login');
         }
      
     }
 
     function login()
     {
-        return view('auth.login');
+        return view('admin.auth.login');
     }
 
     public function postLogin(Request $request)

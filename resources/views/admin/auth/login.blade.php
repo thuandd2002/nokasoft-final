@@ -12,7 +12,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('default/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- icheck bootstrap -->
-    <link rel="stylesheet" href="{{ asset('/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('default/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('default/dist/css/adminlte.min.css') }}">
 </head>
@@ -64,6 +64,15 @@
                 @if (Session::has('error'))
                     <div class="alert alert-danger alert-dismissible" role="alert">
                         <strong>{{ Session::get('error') }}</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                    </div>
+                @endif
+                @if (Session::has('success'))
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <strong>{{ Session::get('success') }}</strong>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             <span class="sr-only">Close</span>
