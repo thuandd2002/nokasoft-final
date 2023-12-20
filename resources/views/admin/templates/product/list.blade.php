@@ -33,10 +33,10 @@
                             Categories Name
                         </th>
                         <th style="width: 30%">
-                            Team Members
+                            Color
                         </th>
                         <th>
-                            Project Progress
+                            Size
                         </th>
                         <th style="width: 8%" class="text-center">
                             Status
@@ -60,34 +60,45 @@
                                     {{ $item->created_at }}
                                 </small>
                             </td>
+
                             <td>
-                                <ul class="list-inline">
-                                    <li class="list-inline-item">
-                                        <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar.png">
-                                    </li>
-                                </ul>
+                                @foreach ($colors as $colorsItems)
+                                    <ul class="list-inline">
+                                        @foreach ($colorsItems as $colorsItem)
+                                            @if ($colorsItem->product_id == $item->id)
+                                                <li class="list-inline-item">
+                                                    <img alt="Avatar" class="table-avatar"
+                                                        src="{{ asset('storage/' . $colorsItem->image) }}">
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                    </ul>
+                                @endforeach
                             </td>
-                            <td class="project_progress">
-                                <div class="progress progress-sm">
-                                    <div class="progress-bar bg-green" role="progressbar" aria-valuenow="57"
-                                        aria-valuemin="0" aria-valuemax="100" style="width: 57%">
-                                    </div>
-                                </div>
-                                <small>
-                                    57% Complete
-                                </small>
+                            <td>
+                                @foreach ($size as $sizeItems)
+                                    @foreach ($sizeItems as $sizeItem)
+                                        @if ($sizeItem->product_id == $item->id)
+                                            <small>
+                                                {{ $sizeItem->name }}
+                                            </small>
+                                        @endif
+                                    @endforeach
+                                @endforeach
                             </td>
+
                             <td class="project-state">
                                 <span class="badge badge-success">Success</span>
                             </td>
                             <td class="project-actions text-right">
                                 <a class="btn btn-info btn-sm"
-                                    href="{{ route('route_admin_category_detail', ['id' => $item->id]) }}">
+                                    href="{{ route('route_admin_products_detail', ['id' => $item->id]) }}">
                                     <i class="fas fa-pencil-alt">
                                     </i>
                                     Edit
                                 </a>
-                                <a onclick="return myFunction()" class="btn btn-danger btn-sm" href="{{route('route_admin_category_delete',['id'=>$item->id])}}">
+                                <a onclick="return myFunction()" class="btn btn-danger btn-sm"
+                                    href="{{ route('route_admin_products_delete', ['id' => $item->id]) }}">
                                     <i class="fas fa-trash">
                                     </i>
                                     Delete
@@ -103,8 +114,7 @@
 
 <script>
     function myFunction() {
-        if(!confirm("Are You Sure to delete this"))
-        event.preventDefault();
+        if (!confirm("Are You Sure to delete this"))
+            event.preventDefault();
     }
-   </script>
-  
+</script>

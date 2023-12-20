@@ -11,11 +11,5 @@ class Categories extends Model
     protected $table = "categories";
     protected $fillable = ['id', 'product_id', 'name'];
 
-    // public function loadListWithPager($params = [])
-    // {   
-    //     $query = DB::table($this->table)
-    //         ->select($this->fillable);
-    //     $list = $query->paginate(10);
-    //     return $list;
-    // }
+    
 }

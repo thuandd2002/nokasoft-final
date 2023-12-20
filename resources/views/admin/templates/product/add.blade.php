@@ -32,7 +32,7 @@
         </div>
     @endif
     <div class="col-md-6">
-        <form action="{{ route('route_admin_category_add') }}" method="POST">
+        <form action="{{ route('route_admin_products_add') }}" method="POST">
             @csrf
             <div class="form-group">
                 <label for="exampleInputEmail1">Name</label>

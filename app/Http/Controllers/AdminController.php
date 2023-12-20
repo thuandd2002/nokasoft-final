@@ -8,6 +8,7 @@ use \App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 class AdminController extends Controller
 {
     function forgotPassword(Request $request)
@@ -71,5 +72,38 @@ class AdminController extends Controller
         }else{
             return abort(404);
         }   
+    }
+
+    function register(Request $request){
+        if($request->isMethod('POST')){
+            $rules = [
+                'name'=> 'required',
+                'email'=> 'required|email|unique:users',
+                'password' => 'required',
+                'repassword' => 'required|same:password',
+            ];
+            $messages = [
+                'password.required' => 'Please enter password',
+                'name.required' => 'Please enter name',
+                'email.required' => 'Please enter email',
+                'repassword.required' => 'Please entern confirm password',
+            ];
+            $validator = Validator::make($request->all(), $rules, $messages);
+            if ($validator->fails()) {
+                return redirect('route_admin_register')->withErrors($validator);
+            }else{
+                $params = [];
+                $params['cols'] = $request->post();
+                unset($params['cols']['_token']);
+                unset($params['cols']['repassword']);
+                bcrypt($params['cols']['paswords']);
+                DB::table('users')->insert($params);
+                Session::flash('success', 'User register successfully');
+                return redirect()->route('admin_login');
+            }
+
+        }
+        
+        return view('admin.auth.register');
     }
 }

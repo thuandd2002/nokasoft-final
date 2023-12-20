@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+// use App\Models\Colors;
 class Products extends Model
 {
     use HasFactory;
@@ -17,5 +18,9 @@ class Products extends Model
             ->select($this->fillable);
         $list = $query->paginate(10);
         return $list;
+    }
+    public function color()
+    {
+        return $this->hasMany(Colors::class,'product_id','id');
     }
 }

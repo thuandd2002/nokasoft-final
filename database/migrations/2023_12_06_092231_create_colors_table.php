@@ -15,7 +15,7 @@ class CreateColorsTable extends Migration
             $table->string('image')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 

@@ -14,15 +14,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [\App\Http\Controllers\HomeController::class,'index']);
+Route::get('/', [\App\Http\Controllers\HomeController::class, 'index']);
 // Route::get('/admin', [\App\Http\Controllers\HomeController::class, 'admin']);
 
-Route::get('/admin/login', 'HomeController@login')->name('admin_login');
-Route::post('/admin/login', 'HomeController@postLogin')->name('admin/login');
-Route::get('/admin', 'HomeController@admin');
-Route::get('/admin/logout', "HomeController@getLogout")->name('admin/logout');
+Route::prefix('admin')->group(
+    function () {
+        Route::match(['get','post'],'register','AdminController@register')->name('route_admin_register');
+        Route::get('/login', 'HomeController@login')->name('admin_login');
+        Route::post('/login', 'HomeController@postLogin')->name('admin/login');
+        Route::get('/', 'HomeController@admin');
+        Route::get('/logout', "HomeController@getLogout")->name('admin/logout');
+        Route::match(['get', 'post'], 'forgot-password', 'AdminController@forgotPassword')->name('route_admin_forgot_password');
+        Route::match(['get', 'post'], 'change-password/{id}/{remember_token}/', 'AdminController@changePassword')->name('route_admin_change_password');
+    }
+);
 
-Route::prefix('admin')-> middleware(['auth.admin.middleware'])->group(
+Route::prefix('admin')->middleware(['auth.admin.middleware'])->group(
     function () {
         //Categories
         Route::get('categories/list', 'CategoriesController@list')->name('route_admin_category_list');
@@ -32,7 +39,12 @@ Route::prefix('admin')-> middleware(['auth.admin.middleware'])->group(
             ->name('route_admin_category_update');
         Route::delete('/categories/delete/{id}', 'CategoriesController@delete')->name('route_admin_category_delete');
         //products
-        Route::get('product/list', 'CategoriesController@list')->name('route_admin_products_list');
+        Route::get('products/list', 'ProductsController@listProducts')->name('route_admin_products_list');
+        Route::match(['get', 'post'], 'product/add', 'ProductsController@add')->name('route_admin_products_add');
+        Route::get('products/detail/{id}', 'ProductsController@detail')->name('route_admin_products_detail');
+        Route::post('/products/update/{id}', 'ProductsController@update')
+            ->name('route_admin_products_update');
+        Route::get('/products/delete/{id}', 'ProductsController@delete')->name('route_admin_products_delete');
         //endproducts
         //sizes
         Route::get('sizes/list', 'SizesController@list')->name('route_admin_sizes_list');
@@ -51,10 +63,4 @@ Route::prefix('admin')-> middleware(['auth.admin.middleware'])->group(
     }
 );
 
-//forgot_password admin
-        Route::prefix('admin')->group(
-        function (){
-            Route::match(['get','post'],'forgot-password','AdminController@forgotPassword')->name('route_admin_forgot_password');
-            Route::match(['get','post'],'change-password/{id}/{remember_token}/','AdminController@changePassword')->name('route_admin_change_password');
-        }
-        );
+
