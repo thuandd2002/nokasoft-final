@@ -45,6 +45,7 @@ Route::prefix('admin')->middleware(['auth.admin.middleware'])->group(
         Route::post('/products/update/{id}', 'ProductsController@update')
             ->name('route_admin_products_update');
         Route::get('/products/delete/{id}', 'ProductsController@delete')->name('route_admin_products_delete');
+        Route::delete('product/delete-multiple', 'ProductsController@deleteMutiple');
         //endproducts
         //sizes
         Route::get('sizes/list', 'SizesController@list')->name('route_admin_sizes_list');

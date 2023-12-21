@@ -12,14 +12,11 @@
     <div class="">
         <div class="card-header">
             <h3 class="card-title">Projects</h3>
-
             <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                    <i class="fas fa-times"></i>
-                </button>
+                <a class="btn btn-info btn-sm" href="{{ route('route_admin_products_add') }}">
+                    Add new
+                </a>
+                <button id="deleteMultiple" class="btn btn-danger btn-sm btn-del" data-product-id="">Delete Mutiple</button>
             </div>
         </div>
         <div class="card-body ">
@@ -30,16 +27,19 @@
                             #
                         </th>
                         <th style="width: 20%">
+                            Product Name
+                        </th>
+                        <th style="width: 20%">
+                            Image
+                        </th>
+                        <th style="width: 20%">
                             Categories Name
                         </th>
-                        <th style="width: 30%">
+                        <th style="width: 20%">
                             Color
                         </th>
                         <th>
                             Size
-                        </th>
-                        <th style="width: 8%" class="text-center">
-                            Status
                         </th>
                         <th style="width: 20%">
                         </th>
@@ -49,7 +49,7 @@
                     @foreach ($items as $item)
                         <tr>
                             <td>
-                                {{ $item->id }}
+                                <input type="checkbox" class="deleteCheckbox" name="selectedProducts[]" data-product-id="{{ $item->id }}">
                             </td>
                             <td>
                                 <a>
@@ -60,35 +60,42 @@
                                     {{ $item->created_at }}
                                 </small>
                             </td>
+                            <td>
+                                <ul class="list-inline">
+                                    <li class="list-inline-item">
+                                        <img alt="Avatar" class="img-fluid" width="50px" height="50px"
+                                            src="{{ asset('storage/' . $item->image) }}">
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>
+                                @foreach ($item->category as $cate)
+                                    <small>
+                                        {{ $cate->name }}
+                                    </small>
+                                @endforeach
+                            </td>
 
                             <td>
-                                @foreach ($colors as $colorsItems)
+                                @foreach ($item->color as $colors)
                                     <ul class="list-inline">
-                                        @foreach ($colorsItems as $colorsItem)
-                                            @if ($colorsItem->product_id == $item->id)
-                                                <li class="list-inline-item">
-                                                    <img alt="Avatar" class="table-avatar"
-                                                        src="{{ asset('storage/' . $colorsItem->image) }}">
-                                                </li>
-                                            @endif
-                                        @endforeach
+                                        <li class="list-inline-item">
+                                            <img alt="Avatar" class="table-avatar"
+                                                src="{{ asset('storage/' . $colors->image) }}">
+                                        </li>
                                     </ul>
                                 @endforeach
                             </td>
                             <td>
-                                @foreach ($size as $sizeItems)
-                                    @foreach ($sizeItems as $sizeItem)
-                                        @if ($sizeItem->product_id == $item->id)
-                                            <small>
-                                                {{ $sizeItem->name }}
-                                            </small>
-                                        @endif
-                                    @endforeach
+                                @foreach ($item->size as $size)
+                                    <small>
+                                        {{ $size->name . ',' }}
+                                    </small>
                                 @endforeach
                             </td>
 
                             <td class="project-state">
-                                <span class="badge badge-success">Success</span>
+
                             </td>
                             <td class="project-actions text-right">
                                 <a class="btn btn-info btn-sm"
@@ -117,4 +124,11 @@
         if (!confirm("Are You Sure to delete this"))
             event.preventDefault();
     }
+</script>
+<script>
+     $(document).ready(function () {
+        $.('.btn-del').on('click', function(){
+            console.log(123);
+        })
+     })
 </script>

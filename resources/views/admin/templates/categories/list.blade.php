@@ -12,6 +12,11 @@
     <div class="">
         <div class="card-header">
             <h3 class="card-title">List Categories</h3>
+            <div class="card-tools">
+                <a class="btn btn-info btn-sm" href="{{route('route_admin_category_add')}}">
+                    Add new
+                </a>    
+            </div>
         </div>
         <div class="card-body ">
             <table class="table table-striped projects">
@@ -54,7 +59,7 @@
                             <td>
                                 <ul class="list-inline">
                                     <li class="list-inline-item">
-                                        <img alt="Avatar" class="img-fluid" src="{{asset('storage/'.$item->image)}}">
+                                        <img alt="Avatar" class="img-fluid" width="50px" src="{{asset('storage/'.$item->images)}}">
                                     </li>
                                 </ul>
                             </td>

@@ -20,7 +20,7 @@ class CategoriesController extends Controller
             unset($param['cols']['_token']);
             if ($request->hasFile('image')&& $request->file('image')->isValid()){
                 $image = $request->file('image')->store('uploads', 'public');
-                $param['cols']['image'] = $image;
+                $param['cols']['images'] = $image;
             }
             DB::table('categories')->insert($param);
             Session::flash('success', 'Category added successfully');
