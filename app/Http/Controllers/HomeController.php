@@ -28,6 +28,7 @@ class HomeController extends Controller
     }
     function index ()
     {
+        $cart = session()->get('cart', []);
         $colectionProduct = $this->_products->get();
         $colectionCategories = $this->_categories->get();
         $colectionSizes = $this->_sizes->get();
@@ -36,7 +37,8 @@ class HomeController extends Controller
          ['itemsProdcuts' => $colectionProduct,
          'itemsCategories' => $colectionCategories,
          'itemsSizes' => $colectionSizes,
-         'itemsColors' => $colectionColors
+         'itemsColors' => $colectionColors,
+         'cart'=>$cart,
          ]
         );
     }

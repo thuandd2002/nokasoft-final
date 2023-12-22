@@ -14,14 +14,13 @@
 
 <div class="cart-icon-bottom">
 </div>
-
 <div id="checkout">
 	CHECKOUT
 </div>
 <div id="header">	
 	<ul>
-        <li><a href="">Home</a></li>
-        <li><a href="">BRANDS</a></li>
+        <li><a href="/">Home</a></li>
+        <li><a href="{{route('show-cart')}}">Cart</a></li>
         <li><a href="">DESIGNERS</a></li>
         <li><a href="">CONTACT</a></li>                                              
     </ul>		

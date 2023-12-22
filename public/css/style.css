@@ -1004,3 +1004,7 @@ div.sku strong{
     position: absolute;
     margin: 3px;
 }
+.thuan{
+	text-decoration: none;
+	color:black
+}

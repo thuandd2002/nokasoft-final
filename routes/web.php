@@ -14,8 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [\App\Http\Controllers\HomeController::class, 'index']);
-// Route::get('/admin', [\App\Http\Controllers\HomeController::class, 'admin']);
+Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('homepage');
+Route::get('addToCart/{id}','CartController@addToCart')->name('add-to-cart');
+Route::get('cart','CartController@showCart')->name('show-cart');
+Route::post('place-order/','CartController@placeOrder')->name('place-order');
 
 Route::prefix('admin')->group(
     function () {
