@@ -1,14 +1,17 @@
 <div id="sidebar">
-	<h3>CART</h3>
-    <div id="cart">
-    	<span class="empty">No items in cart.</span>       
+	<h3><a style="text-decoration: none; color: black" href="{{ route('show-cart') }}">Cart</a></h3>
+    <h3>Search</h3>
+    <div class="checklist">
+        <form action="{{ route('product.search') }}" method="GET">
+            <input type="text" name="keyword" placeholder="Input Keywords">
+            <button type="submit">Search</button>
+        </form>
     </div>
-  
     <h3>CATEGORIES</h3>
-    <div class="checklist categories">
+    <div class="checklist colors">
     	<ul>
             @foreach ($itemsCategories as $item)
-            <li><a href=""><span></span>{{$item->name}}</a></li>
+            <li><a href="{{ route('product.search.by.category', ['category' => $item->name]) }}"><span></span>{{$item->name}}</a></li>
             @endforeach
         	
         </ul>
@@ -18,7 +21,7 @@
     <div class="checklist colors">
     	<ul>
             @foreach ($itemsColors as $item)
-            <li><a href=""><span></span>{{$item->name}}</a></li>
+            <li><a href="{{ route('product.search.by.color', ['name' => $item->name]) }}"><span></span>{{$item->name}}</a></li>
             @endforeach
         </ul>
     </div>

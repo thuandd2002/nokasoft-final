@@ -32,24 +32,44 @@
         </div>
     @endif
     <div class="col-md-6">
-        <form action="{{ route('route_admin_category_add') }}" method="POST">
+        <form action="{{ route('route_admin_products_add') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
-                <label for="exampleInputEmail1">Name</label>
+                <label for="name">Name</label>
                 <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter Name" name="name">
             </div>
-            {{-- <div class="form-group">
-                <label for="exampleInputFile">File input</label>
-                <div class="input-group">
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="exampleInputFile">
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                    </div>
-                    <div class="input-group-append">
-                        <span class="input-group-text">Upload</span>
-                    </div>
-                </div>
-            </div> --}}
+            <div class="form-group">
+                <label for="name">Price</label>
+                <input type="text" class="form-control"  name="price">
+            </div>
+            <div class="form-group">
+                <label for="categories">Categories</label>
+                <select class="form-control" name="categorie[]" multiple>
+                    @foreach ($categories as $item)
+                        <option value="{{ $item->id }}"> {{ $item->name }} </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="size">Size</label>
+                <select class="form-control" name="size[]" multiple>
+                    @foreach ($sizes as $item)
+                        <option value="{{ $item->id }}"> {{ $item->name }} </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Color</label>
+                <select class="form-control" name="color[]" multiple>
+                    @foreach ($colors as $item)
+                        <option value="{{ $item->id }}"> {{ $item->name }} </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Image">Image</label>
+                <input type="file" class="form-control" name="image">
+            </div>
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Add Categories</button>
             </div>

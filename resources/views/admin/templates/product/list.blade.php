@@ -1,4 +1,5 @@
 @extends('admin.layout.layout')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @section('col')
     @if (Session::has('success'))
         <div class="alert alert-success alert-dismissible" role="alert">
@@ -12,14 +13,11 @@
     <div class="">
         <div class="card-header">
             <h3 class="card-title">Projects</h3>
-
             <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                    <i class="fas fa-times"></i>
-                </button>
+                <a class="btn btn-info btn-sm" href="{{ route('route_admin_products_add') }}">
+                    Add new
+                </a>
+                <button id="deleteMultiple" class="btn btn-danger btn-sm" data-product-id="[]">Delete Mutiple</button>
             </div>
         </div>
         <div class="card-body ">
@@ -30,26 +28,31 @@
                             #
                         </th>
                         <th style="width: 20%">
-                            Categories Name
-                        </th>
-                        <th style="width: 30%">
-                            Team Members
-                        </th>
-                        <th>
-                            Project Progress
-                        </th>
-                        <th style="width: 8%" class="text-center">
-                            Status
+                            Product Name
                         </th>
                         <th style="width: 20%">
+                            Image
                         </th>
+                        <th style="width: 20%">
+                            Categories Name
+                        </th>
+                        <th style="width: auto">
+                            Price
+                        </th>
+                        <th style="width:10%">
+                            Color
+                        </th>
+                        <th>
+                            Size
+                        </th>
+                        
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($items as $item)
                         <tr>
                             <td>
-                                {{ $item->id }}
+                                <input type="checkbox"  class="product-checkbox" name="product_ids[]" value="{{ $item->id }}">
                             </td>
                             <td>
                                 <a>
@@ -63,31 +66,51 @@
                             <td>
                                 <ul class="list-inline">
                                     <li class="list-inline-item">
-                                        <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar.png">
+                                        <img alt="Avatar" class="img-fluid" width="50px" height="50px"
+                                            src="{{ asset('storage/' . $item->image) }}">
                                     </li>
                                 </ul>
                             </td>
-                            <td class="project_progress">
-                                <div class="progress progress-sm">
-                                    <div class="progress-bar bg-green" role="progressbar" aria-valuenow="57"
-                                        aria-valuemin="0" aria-valuemax="100" style="width: 57%">
-                                    </div>
-                                </div>
-                                <small>
-                                    57% Complete
-                                </small>
+                            <td>
+                                @foreach ($item->category as $cate)
+                                    <small>
+                                        {{ $cate->name }}
+                                    </small>
+                                @endforeach
                             </td>
+                            <td>
+                                
+                                    <small>
+                                        {{ $item->price }}
+                                    </small>
+                               
+                            </td>
+                            <td>
+                                @foreach ($item->color as $colors)
+                                            <img alt="Avatar" class="table-avatar"
+                                                src="{{ asset('storage/' . $colors->image) }}">
+                                @endforeach
+                            </td>
+                            <td>
+                                @foreach ($item->size as $size)
+                                    <small>
+                                        {{ $size->name . ',' }}
+                                    </small>
+                                @endforeach
+                            </td>
+
                             <td class="project-state">
-                                <span class="badge badge-success">Success</span>
+
                             </td>
                             <td class="project-actions text-right">
                                 <a class="btn btn-info btn-sm"
-                                    href="{{ route('route_admin_category_detail', ['id' => $item->id]) }}">
+                                    href="{{ route('route_admin_products_detail', ['id' => $item->id]) }}">
                                     <i class="fas fa-pencil-alt">
                                     </i>
                                     Edit
                                 </a>
-                                <a onclick="return myFunction()" class="btn btn-danger btn-sm" href="{{route('route_admin_category_delete',['id'=>$item->id])}}">
+                                <a onclick="return myFunction()" class="btn btn-danger btn-sm"
+                                    href="{{ route('route_admin_products_delete', ['id' => $item->id]) }}">
                                     <i class="fas fa-trash">
                                     </i>
                                     Delete
@@ -95,6 +118,7 @@
                             </td>
                         </tr>
                     @endforeach
+                    {{ $items->links() }}
                 </tbody>
             </table>
         </div>
@@ -103,8 +127,45 @@
 
 <script>
     function myFunction() {
-        if(!confirm("Are You Sure to delete this"))
-        event.preventDefault();
+        if (!confirm("Are You Sure to delete this"))
+            event.preventDefault();
     }
-   </script>
-  
+</script>
+
+@section('scripts')
+<script>
+    $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+    });
+    $(document).ready(function() {
+        $('#deleteMultiple').on('click', function() {
+            var productIds = $('.product-checkbox:checked').map(function() {
+                return $(this).val();
+            }).get();
+            console.log(productIds);
+            if (productIds.length > 0) {
+                $.ajax({
+                    url: '/admin/products/delete-multiple',
+                    type: 'DELETE',
+                    data: { 
+                        __tokens: '{{csrf_token()}}',
+                        product_ids: productIds
+                     },
+                    success: function(response) {
+                        console.log(response.message);
+                        location.reload();
+                        alert('Đã xóa sản phẩm thành công.');
+                    },
+                    error: function(error) {
+                        console.error('Xóa sản phẩm không thành công.', error);
+                    }
+                });
+            } else {
+                console.warn('Vui lòng chọn ít nhất một sản phẩm để xóa.');
+            }
+        });
+    });
+  </script>
+@endsection

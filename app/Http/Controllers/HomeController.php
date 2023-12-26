@@ -26,63 +26,68 @@ class HomeController extends Controller
         $this->_colors = $colors;
         $this->_sizes = $sizes;
     }
-    function index ()
+    function index()
     {
-        $colectionProduct = $this->_products->get();
+        $cart = session()->get('cart', []);
+        $colectionProduct = Products::paginate(12);
         $colectionCategories = $this->_categories->get();
         $colectionSizes = $this->_sizes->get();
         $colectionColors = $this->_colors->get();
-        return view('client.templates.home',
-         ['itemsProdcuts' => $colectionProduct,
-         'itemsCategories' => $colectionCategories,
-         'itemsSizes' => $colectionSizes,
-         'itemsColors' => $colectionColors
-         ]
+        return view(
+            'client.templates.home',
+            [
+                'itemsProdcuts' => $colectionProduct,
+                'itemsCategories' => $colectionCategories,
+                'itemsSizes' => $colectionSizes,
+                'itemsColors' => $colectionColors,
+                'cart' => $cart,
+            ]
         );
     }
-    function admin()
+    function productDetail($id, Request $request)
     {
-        if (Auth::check()) {
-            return view('admin.layout.layout');
-        } else {
-            return view('auth.login');
-        }
-     
+        $items = Products::find($id);
+        // dd($items->color);
+        $colectionCategories = $this->_categories->get();
+        $colectionSizes = $this->_sizes->get();
+        $colectionColors = $this->_colors->get();
+        return view(
+            'client.templates.product.detail',
+            [
+                'itemsCategories' => $colectionCategories,
+                'itemsSizes' => $colectionSizes,
+                'itemsColors' => $colectionColors,
+                'item' => $items,
+            ]
+        );
+    }
+    public function search(Request $request)
+    {
+        $keyword = $request->input('keyword');
+        $products = Products::where('name', 'like', "%$keyword%")->get();
+        $itemsCategories = $this->_categories->get();
+        $itemsSizes = $this->_sizes->get();
+        $itemsColors = $this->_colors->get();
+        return view('client.templates.product.search', compact('products', 'keyword', 'itemsCategories', 'itemsSizes', 'itemsColors'));
     }
 
-    function login()
+    function searchByCategory($categoryName)
     {
-        return view('auth.login');
+        $category = Categories::where('name', $categoryName)->first();
+        $itemsCategories = $this->_categories->get();
+        $itemsSizes = $this->_sizes->get();
+        $itemsColors = $this->_colors->get();
+        $products = $category->products;
+        return view('client.templates.product.search', compact('products', 'categoryName','itemsCategories', 'itemsSizes', 'itemsColors'));
     }
-
-    public function postLogin(Request $request)
+    function searchByColor($colorName)
     {
-        $rules = [
-            'email' => 'required|email',
-            'password' => 'required'
-        ];
-        $messages = [
-            'email.required' => 'Mời bạn nhập vào email',
-            'email.email' => 'Mời bạn nhập đúng định dạng email',
-            'password.required' => 'Mời bạn nhập password',
-        ];
-        $validator = Validator::make($request->all(), $rules, $messages);
-        if ($validator->fails()) {
-            return redirect('admin/login')->withErrors($validator);
-        } else {
-            $email = $request->input('email');
-            $password = $request->input('password');
-            if (Auth::attempt(['email' => $email, 'password' => $password])) {
-                return redirect('admin');
-            } else {
-                Session::flash('error', 'Email hoặc mật khẩu k đúng');
-                return redirect('admin/login');
-            }
-        }
-    }
-    public function getLogout()
-    {
-        Auth::logout();
-        return redirect('admin/login');
+        $color = Colors::where('name', $colorName)->first();
+        $itemsCategories = $this->_categories->get();
+        $itemsSizes = $this->_sizes->get();
+        $itemsColors = $this->_colors->get();
+        $products = $color->products;
+        
+        return view('client.templates.product.search', compact('products', 'colorName','itemsCategories', 'itemsSizes', 'itemsColors'));
     }
 }
