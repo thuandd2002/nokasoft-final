@@ -1008,3 +1008,51 @@ div.sku strong{
 	text-decoration: none;
 	color:black
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination li {
+    margin: 0 5px;
+    display: inline-block;
+}
+
+.pagination a {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    color: #333;
+    text-decoration: none;
+}
+
+.pagination .active a {
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #007bff;
+}
+
+
+.cart-list, th, td {
+	border-collapse: collapse;
+	border-bottom: 1px solid #ddd;
+	width:80%;
+}
+.cart-list th,td{
+	width: auto;
+	height: 70px;
+	text-align: center;
+}
+.cart-list tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+.cart-list td img{
+	width: 20%;
+	height: 80%;
+}
+.cart-list a{
+	text-decoration: none;
+	color: #000;
+	font-size: bold;
+}

@@ -1,4 +1,5 @@
 @extends('admin.layout.layout')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @section('col')
     @if (Session::has('success'))
         <div class="alert alert-success alert-dismissible" role="alert">
@@ -16,7 +17,7 @@
                 <a class="btn btn-info btn-sm" href="{{ route('route_admin_products_add') }}">
                     Add new
                 </a>
-                <button id="deleteMultiple" class="btn btn-danger btn-sm btn-del" data-product-id="">Delete Mutiple</button>
+                <button id="deleteMultiple" class="btn btn-danger btn-sm" data-product-id="[]">Delete Mutiple</button>
             </div>
         </div>
         <div class="card-body ">
@@ -35,21 +36,23 @@
                         <th style="width: 20%">
                             Categories Name
                         </th>
-                        <th style="width: 20%">
+                        <th style="width: auto">
+                            Price
+                        </th>
+                        <th style="width:10%">
                             Color
                         </th>
                         <th>
                             Size
                         </th>
-                        <th style="width: 20%">
-                        </th>
+                        
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($items as $item)
                         <tr>
                             <td>
-                                <input type="checkbox" class="deleteCheckbox" name="selectedProducts[]" data-product-id="{{ $item->id }}">
+                                <input type="checkbox"  class="product-checkbox" name="product_ids[]" value="{{ $item->id }}">
                             </td>
                             <td>
                                 <a>
@@ -75,15 +78,17 @@
                                     </small>
                                 @endforeach
                             </td>
-
+                            <td>
+                                
+                                    <small>
+                                        {{ $item->price }}
+                                    </small>
+                               
+                            </td>
                             <td>
                                 @foreach ($item->color as $colors)
-                                    <ul class="list-inline">
-                                        <li class="list-inline-item">
                                             <img alt="Avatar" class="table-avatar"
                                                 src="{{ asset('storage/' . $colors->image) }}">
-                                        </li>
-                                    </ul>
                                 @endforeach
                             </td>
                             <td>
@@ -113,6 +118,7 @@
                             </td>
                         </tr>
                     @endforeach
+                    {{ $items->links() }}
                 </tbody>
             </table>
         </div>
@@ -125,10 +131,41 @@
             event.preventDefault();
     }
 </script>
+
+@section('scripts')
 <script>
-     $(document).ready(function () {
-        $.('.btn-del').on('click', function(){
-            console.log(123);
-        })
-     })
-</script>
+    $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+    });
+    $(document).ready(function() {
+        $('#deleteMultiple').on('click', function() {
+            var productIds = $('.product-checkbox:checked').map(function() {
+                return $(this).val();
+            }).get();
+            console.log(productIds);
+            if (productIds.length > 0) {
+                $.ajax({
+                    url: '/admin/products/delete-multiple',
+                    type: 'DELETE',
+                    data: { 
+                        __tokens: '{{csrf_token()}}',
+                        product_ids: productIds
+                     },
+                    success: function(response) {
+                        console.log(response.message);
+                        location.reload();
+                        alert('Đã xóa sản phẩm thành công.');
+                    },
+                    error: function(error) {
+                        console.error('Xóa sản phẩm không thành công.', error);
+                    }
+                });
+            } else {
+                console.warn('Vui lòng chọn ít nhất một sản phẩm để xóa.');
+            }
+        });
+    });
+  </script>
+@endsection

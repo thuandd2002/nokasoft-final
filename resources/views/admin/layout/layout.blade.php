@@ -31,6 +31,7 @@
   <link rel="stylesheet" href="{{asset('default/plugins/daterangepicker/daterangepicker.css')}}">
   <!-- summernote -->
   <link rel="stylesheet" href="{{asset('default/plugins/summernote/summernote-bs4.min.css')}}">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -193,5 +194,8 @@
 <script src="{{asset('default/dist/js/demo.js')}}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{asset('default/dist/js/pages/dashboard.js')}}"></script>
+
+@yield('scripts')
+
 </body>
 </html>

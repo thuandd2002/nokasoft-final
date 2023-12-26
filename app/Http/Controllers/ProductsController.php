@@ -20,7 +20,7 @@ class ProductsController extends Controller
     }
     public function listProducts()
     {
-        $items = Products::all();
+        $items = Products::paginate(7);
         return view('admin.templates.product.list', ['items' => $items]);
     }
     function add(Request $request)
@@ -101,10 +101,11 @@ class ProductsController extends Controller
     }
     function deleteMutiple(Request $request)
     {
-        $selectedProducts = $request->input('selectedProducts', []);
-        Products::destroy($selectedProducts);
-
-        return response()->json(['message' => 'Các sản phẩm đã được xóa thành công.']);
+        $productIds = $request->input('product_ids');
     
+        // Xóa các sản phẩm có ID nằm trong mảng $productIds
+        Products::whereIn('id', $productIds)->delete();
+    
+        return response()->json(['message' => 'Đã xóa sản phẩm thành công.']);
     }
 }

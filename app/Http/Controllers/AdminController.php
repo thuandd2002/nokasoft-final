@@ -9,8 +9,54 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
+    function admin()
+    {
+        if (Auth::check()) {
+            return view('admin.layout.layout');
+        } else {
+            return view('admin.auth.login');
+        }
+     
+    }
+    function login()
+    {
+        return view('admin.auth.login');
+    }
+
+    public function postLogin(Request $request)
+    {
+        $rules = [
+            'email' => 'required|email',
+            'password' => 'required'
+        ];
+        $messages = [
+            'email.required' => 'Mời bạn nhập vào email',
+            'email.email' => 'Mời bạn nhập đúng định dạng email',
+            'password.required' => 'Mời bạn nhập password',
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+            return redirect('admin/login')->withErrors($validator);
+        } else {
+            $email = $request->input('email');
+            $password = $request->input('password');
+            if (Auth::attempt(['email' => $email, 'password' => $password, 'roles'=>1])) {
+                return redirect('admin');
+            } else {
+                Session::flash('error', 'Email hoặc mật khẩu k đúng');
+                return redirect('admin/login');
+            }
+        }
+    }
+    public function getLogout()
+    {
+        Auth::logout();
+        return redirect('admin/login');
+    }
     function forgotPassword(Request $request)
     {
         if ($request->isMethod('POST')) {
@@ -76,6 +122,8 @@ class AdminController extends Controller
 
     function register(Request $request){
         if($request->isMethod('POST')){
+          
+           
             $rules = [
                 'name'=> 'required',
                 'email'=> 'required|email|unique:users',
@@ -92,11 +140,13 @@ class AdminController extends Controller
             if ($validator->fails()) {
                 return redirect('route_admin_register')->withErrors($validator);
             }else{
+                
                 $params = [];
                 $params['cols'] = $request->post();
+                $params['cols']['roles']= 1;
                 unset($params['cols']['_token']);
                 unset($params['cols']['repassword']);
-                bcrypt($params['cols']['paswords']);
+                $params['cols']['password']= Hash::make($params['cols']['password']);
                 DB::table('users')->insert($params);
                 Session::flash('success', 'User register successfully');
                 return redirect()->route('admin_login');

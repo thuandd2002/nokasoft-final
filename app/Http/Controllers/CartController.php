@@ -8,6 +8,7 @@ use App\Models\Products;
 use App\Models\Colors;
 use App\Models\Categories;
 use App\Models\Sizes;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
@@ -25,57 +26,137 @@ class CartController extends Controller
         $this->_sizes = $sizes;
     }
 
-    
-    function addToCart($id, Request $request) {
-       
-        $items =Products::find($id);
-        $cart = session()->get('cart', []);
-        if (isset($cart[$items->id])) {
-            // Nếu sản phẩm đã tồn tại trong giỏ hàng, cập nhật số lượng
-            $cart[$items->id]['quantity'] += 1;
+
+    function addToCart($id, Request $request)
+    {
+        $items = Products::find($id);
+        if (Auth::check()) {
+            $user = Auth::user();
+            $cart = $user->cart ?? [];
+            $cart = json_decode($user->cart, true);
+            if (isset($cart[$id])) {
+                $cart[$id]['quantity'] += 1;
+            } else {
+                $cart[$id] = [
+                    'id' => $items->id,
+                    'name' => $items->name,
+                    'price' => $items->price,
+                    'image' => $items->image,
+                    'quantity' => 1,
+                ];
+            }
+            $user->cart = $cart;
+            $user->save();
+            Session::put('cart', $cart);
         } else {
-            // Nếu sản phẩm chưa tồn tại trong giỏ hàng, thêm mới
-            $cart[$items->id] = [
-                'name' => $items->name,
-                'price' => $items->price,
-                'image' => $items->image,
-                'quantity' => 1,
-            ];
+            $cart = Session::get('cart', []);
+            if (isset($cart[$id])) {
+                $cart[$id]['quantity'] += 1;
+            } else {
+                $cart[$id] = [
+                    'id' => $items->id,
+                    'name' => $items->name,
+                    'price' => $items->price,
+                    'image' => $items->image,
+                    'quantity' => 1,
+                ];
+            }
+            Session::put('cart', $cart);
         }
-        session()->put('cart', $cart);
         session()->flash('success', 'Products added successfully');
         return redirect('/');
     }
-    function showCart() {
-
-        $cart = session()->get('cart', []);
+    function showCart()
+    {
         $colectionProduct = $this->_products->get();
         $colectionCategories = $this->_categories->get();
         $colectionSizes = $this->_sizes->get();
         $colectionColors = $this->_colors->get();
-        return view('client.templates.cart.index',
-         ['itemsProdcuts' => $colectionProduct,
-         'itemsCategories' => $colectionCategories,
-         'itemsSizes' => $colectionSizes,
-         'itemsColors' => $colectionColors,
-         'cart'=>$cart,
-         ]
+
+        if (Auth::check()) {
+            $user = Auth::user();
+            $cart = $user->cart ?? [];
+            $cart = json_decode($user->cart, true);
+        } else {
+            $cart = session()->get('cart', []);
+        }
+
+        return view(
+            'client.templates.cart.index',
+            [
+                'itemsProdcuts' => $colectionProduct,
+                'itemsCategories' => $colectionCategories,
+                'itemsSizes' => $colectionSizes,
+                'itemsColors' => $colectionColors,
+                'cart' => $cart,
+            ]
         );
+    }
+    function increaseQuantity($id)
+    {
+        if (Auth::check()) {
+            $user = Auth::user();
+            $cart = $user->cart ?? [];
+            $cart = json_decode($user->cart, true);
+            if (isset($cart[$id])) {
+                $cart[$id]['quantity']++;
+                $user->cart = $cart;
+                $user->save();
+                return redirect()->route('show-cart');
+            } else {
+                dd('error');
+            }
+        } else {
+            $cart = session()->get('cart', []);
+            if (isset($cart[$id])) {
+                $cart[$id]['quantity']++;
+                session()->put('cart', $cart);
+                return redirect()->route('show-cart');
+            }
+        }
+    }
+
+    function decreaseQuantity($id)
+    {
+        if (Auth::check()) {
+
+            $user = Auth::user();
+            $cart = $user->cart ?? [];
+            $cart = json_decode($user->cart, true);
+            if (isset($cart[$id])) {
+                $cart[$id]['quantity']--;
+                if ($cart[$id]['quantity'] <= 0) {
+                    unset($cart[$id]);
+                }
+                $user->cart = $cart;
+                $user->save();
+                return redirect()->route('show-cart');
+            }
+        } else {
+            $cart = session()->get('cart', []);
+            if (isset($cart[$id])) {
+                $cart[$id]['quantity']--;
+                if ($cart[$id]['quantity'] <= 0) {
+                    unset($cart[$id]);
+                }
+                session()->put('cart', $cart);
+                return redirect()->route('show-cart');
+            }
+        }
     }
     public function placeOrder(Request $request)
     {
-        // Lấy thông tin đơn hàng từ giỏ hàng
-        $cart = session()->get('cart', []);
-
-        // Xử lý đặt hàng ở đây...
-
-        // Xóa giỏ hàng khỏi session sau khi đặt hàng thành công
-        session()->forget('cart');
-
-        // Đặt thông báo thành công vào session flash
-        session()->flash('success', 'Products order successfully');
-
-        // Chuyển hướng hoặc trả về view thành công
-        return redirect()->route('homepage');
+        if (Auth::check()) {
+            $user = Auth::user();
+            $user->cart = null;
+            $user->save();
+            session()->flash('success', 'Products order successfully');
+            return redirect()->route('homepage');
+        } else {
+            $cart = session()->get('cart', []);
+            session()->forget('cart');
+            session()->flash('success', 'Products order successfully');
+            return redirect()->route('homepage');
+        }
     }
 }

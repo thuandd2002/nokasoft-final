@@ -18,14 +18,33 @@ Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('h
 Route::get('addToCart/{id}','CartController@addToCart')->name('add-to-cart');
 Route::get('cart','CartController@showCart')->name('show-cart');
 Route::post('place-order/','CartController@placeOrder')->name('place-order');
+Route::get('/increase-quantity/{id}', 'CartController@increaseQuantity')->name('increase.quantity');
+Route::get('/decrease-quantity/{id}', 'CartController@decreaseQuantity')->name('decrease.quantity');
+Route::get('product-detail/{id}','HomeController@productDetail')->name('detail.product');
+//search for products
+
+Route::get('/search', 'HomeController@search')->name('product.search');
+Route::get('/search-by-category/{category}', 'HomeController@searchByCategory')->name('product.search.by.category');
+Route::get('/search-by-color/{name}', 'HomeController@searchByColor')->name('product.search.by.color');
+
+Route::prefix('customer/')->group(
+    function () {
+        Route::match(['get','post'],'register','CustomerController@register')->name('route.customer.register');
+        Route::get('login', 'CustomerController@login')->name('route.customer.login');
+        Route::post('login', 'CustomerController@postLogin')->name('route.customer.login');
+        Route::get('logout', "CustomerController@getLogout")->name('route.customer.logout');
+        Route::match(['get', 'post'], 'forgot-password', 'CustomerController@forgotPassword')->name('route.customer.forgot');
+        Route::match(['get', 'post'], 'change-password/{id}/{remember_token}/', 'CustomerController@changePassword')->name('route.customer.changePassword');
+    }
+);
 
 Route::prefix('admin')->group(
     function () {
         Route::match(['get','post'],'register','AdminController@register')->name('route_admin_register');
-        Route::get('/login', 'HomeController@login')->name('admin_login');
-        Route::post('/login', 'HomeController@postLogin')->name('admin/login');
-        Route::get('/', 'HomeController@admin');
-        Route::get('/logout', "HomeController@getLogout")->name('admin/logout');
+        Route::get('/login', 'AdminController@login')->name('admin_login');
+        Route::post('/login', 'AdminController@postLogin')->name('admin/login');
+        Route::get('/', 'AdminController@admin');
+        Route::get('/logout', "AdminController@getLogout")->name('admin/logout');
         Route::match(['get', 'post'], 'forgot-password', 'AdminController@forgotPassword')->name('route_admin_forgot_password');
         Route::match(['get', 'post'], 'change-password/{id}/{remember_token}/', 'AdminController@changePassword')->name('route_admin_change_password');
     }
@@ -47,7 +66,7 @@ Route::prefix('admin')->middleware(['auth.admin.middleware'])->group(
         Route::post('/products/update/{id}', 'ProductsController@update')
             ->name('route_admin_products_update');
         Route::get('/products/delete/{id}', 'ProductsController@delete')->name('route_admin_products_delete');
-        Route::delete('product/delete-multiple', 'ProductsController@deleteMutiple');
+        Route::delete('products/delete-multiple', 'ProductsController@deleteMutiple')->name('products.delete.multiple');;
         //endproducts
         //sizes
         Route::get('sizes/list', 'SizesController@list')->name('route_admin_sizes_list');

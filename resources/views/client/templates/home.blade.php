@@ -65,7 +65,8 @@
                     </div>
                 </div>
             </div>
-        @endforeach
+        @endforeach 
+        {{ $itemsProdcuts->links() }}
     </div>
 @endsection
 <script>
