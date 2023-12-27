@@ -19,7 +19,7 @@
                         <div class="stats">
                             <div class="stats-container">
                                 <span class="product_price">${{ $product->price }}</span>
-                                <span class="product_name">{{ $product->name }}</span>
+                                <span class="product_name"><a style="text-decoration: none; color:black" href="{{route('detail.product',['id'=>$product->id])}}}">{{ $product->name }}</a></span>
                                 <p>{{ $product->description }}</p>
                                 <div class="product-options">
                                     <strong>SIZES</strong>

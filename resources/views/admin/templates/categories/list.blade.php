@@ -43,7 +43,7 @@
                 </thead>
                 <tbody>
                     @foreach ($items as $item)
-                        <tr>
+                        <tr id="{{$item->id}}">
                             <td>
                                 {{ $item->id }}
                             </td>
@@ -87,7 +87,7 @@
                                     <i class="fas fa-trash"></i>
                                     Delete
                                 </a> --}}
-                                <button class="btn btn-danger btn-sm btn-del" id="del" data-categories-id="{{ $item->id }}">Delete</button>
+                                <button class="btn btn-danger btn-sm btn-del" data-categories-id="{{ $item->id }}">Delete</button>
                                 @csrf
                             </td>
                         </tr>
@@ -119,9 +119,8 @@
                     },
                     success: function (data) {
                         if (data.success) {
-                            $(this).closest('tr').remove();
-                            // alert('Categories deleted successfully');
-                            window.location.reload();
+                            $(`#${categoriesId}`).hide()
+                            // window.location.reload();
                         }else {
                             alert('Failed to delete user');
                         }
