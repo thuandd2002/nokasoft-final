@@ -120,7 +120,7 @@
                     success: function (data) {
                         if (data.success) {
                             $(`#${categoriesId}`).hide()
-                            // window.location.reload();
+                            alert('Deleted Successfullye ')
                         }else {
                             alert('Failed to delete user');
                         }

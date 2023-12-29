@@ -43,7 +43,7 @@
             <div class="form-group">
                 <label for="Image">Image</label>
                 <li class="list-inline-item">
-                    <img alt="Avatar" class="img-fluid" src="{{asset('storage/'.$items->image)}}">
+                    <img alt="Avatar" class="img-fluid" src="{{asset('storage/'.$items->images)}}">
                 </li>
                 <input type="file" class="form-control" name="image">
             </div>

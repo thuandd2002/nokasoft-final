@@ -26,6 +26,7 @@ class HomeController extends Controller
         $this->_colors = $colors;
         $this->_sizes = $sizes;
     }
+
     function index()
     {
         $cart = session()->get('cart', []);
@@ -33,6 +34,7 @@ class HomeController extends Controller
         $colectionCategories = $this->_categories->get();
         $colectionSizes = $this->_sizes->get();
         $colectionColors = $this->_colors->get();
+
         return view(
             'client.templates.home',
             [
@@ -44,6 +46,7 @@ class HomeController extends Controller
             ]
         );
     }
+
     function productDetail($id, Request $request)
     {
         $items = Products::find($id);
@@ -61,6 +64,7 @@ class HomeController extends Controller
             ]
         );
     }
+
     public function search(Request $request)
     {
         $keyword = $request->input('keyword');
@@ -68,6 +72,7 @@ class HomeController extends Controller
         $itemsCategories = $this->_categories->get();
         $itemsSizes = $this->_sizes->get();
         $itemsColors = $this->_colors->get();
+
         return view('client.templates.product.search', compact('products', 'keyword', 'itemsCategories', 'itemsSizes', 'itemsColors'));
     }
 
@@ -78,8 +83,10 @@ class HomeController extends Controller
         $itemsSizes = $this->_sizes->get();
         $itemsColors = $this->_colors->get();
         $products = $category->products;
-        return view('client.templates.product.search', compact('products', 'categoryName','itemsCategories', 'itemsSizes', 'itemsColors'));
+
+        return view('client.templates.product.search', compact('products', 'categoryName', 'itemsCategories', 'itemsSizes', 'itemsColors'));
     }
+
     function searchByColor($colorName)
     {
         $color = Colors::where('name', $colorName)->first();
@@ -87,7 +94,7 @@ class HomeController extends Controller
         $itemsSizes = $this->_sizes->get();
         $itemsColors = $this->_colors->get();
         $products = $color->products;
-        
-        return view('client.templates.product.search', compact('products', 'colorName','itemsCategories', 'itemsSizes', 'itemsColors'));
+
+        return view('client.templates.product.search', compact('products', 'colorName', 'itemsCategories', 'itemsSizes', 'itemsColors'));
     }
 }

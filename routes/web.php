@@ -27,7 +27,7 @@ Route::get('/search', 'HomeController@search')->name('product.search');
 Route::get('/search-by-category/{category}', 'HomeController@searchByCategory')->name('product.search.by.category');
 Route::get('/search-by-color/{name}', 'HomeController@searchByColor')->name('product.search.by.color');
 
-Route::prefix('customer/')->group(
+Route::prefix('customer')->group(
     function () {
         Route::match(['get','post'],'register','CustomerController@register')->name('route.customer.register');
         Route::get('login', 'CustomerController@login')->name('route.customer.login');

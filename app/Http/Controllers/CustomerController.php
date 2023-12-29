@@ -35,7 +35,7 @@ class CustomerController extends Controller
             ];
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
-                return redirect('route.customer.register')->withErrors($validator);
+                return redirect()->route('route.customer.register')->withErrors($validator);
             } else {
                 $params = [];
                 $params['cols'] = $request->post();

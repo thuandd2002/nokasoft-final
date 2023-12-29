@@ -48,6 +48,7 @@ class ProductsController extends Controller
         $sizes = Sizes::all();
         $colors = Colors::all();
         $categories = Categories::all();
+
         return view('admin.templates.product.add', compact('sizes', 'colors', 'categories'));
     }
     public function detail($id, Request $request)
@@ -86,13 +87,13 @@ class ProductsController extends Controller
         $products->save();
 
         $products->size()->sync($selectedSize);
-        $products->color()->sync($selectedSize);
+        $products->color()->sync($selectedColor);
         $products->category()->sync($selectedCategorie);
         Session::flash('success', 'Update record #' . $products->id . ' successfully');
         return redirect()->route('route_admin_products_list');
     }
 
-    function delete($id, Request $request)
+    function delete($id)
     {
         $colors = Products::find($id);
         $colors->delete();
