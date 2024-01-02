@@ -45,7 +45,7 @@
                 <li class="list-inline-item">
                     <img alt="Avatar" class="img-fluid" src="{{asset('storage/'.$items->images)}}">
                 </li>
-                <input type="file" class="form-control" name="image">
+                <input type="file" class="form-control" name="images">
             </div>
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Update Categories</button>

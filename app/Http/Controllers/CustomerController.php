@@ -74,8 +74,17 @@ class CustomerController extends Controller
             if (Auth::attempt(['email' => $email, 'password' => $password, 'roles' => 0])) {
                 $sessionCart = session('cart', []);
                 $user = Auth::user();
-                $user->cart = $sessionCart;
-                $user->update();
+                $userCart = json_decode($user->cart, true);
+                foreach ($sessionCart as $productId => $sessionItem){
+                    if (isset($userCart[$productId])) {
+                        $userCart[$productId]['quantity'] += $sessionItem['quantity'];
+                    } else {
+                        $userCart[$productId] = $sessionItem;
+                    }
+                }
+                $user->cart =  json_encode($userCart);
+                $user->save();
+                session(['cart' => []]);
                 return redirect('/');
             } else {
                 Session::flash('error', 'Email hoặc mật khẩu k đúng');

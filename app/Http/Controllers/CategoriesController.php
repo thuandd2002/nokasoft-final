@@ -33,13 +33,14 @@ class CategoriesController extends Controller
        return view('admin.templates.categories.detail',['items'=>$items]);
     }
     function update($id, Request $request){ 
+        
         $categories = Categories::find($id);
-        if ($request->hasFile('image')&& $request->file('image')->isValid()){
-            $image = $request->file('image')->store('uploads', 'public');
-            $categories->image = $image;
+        if ($request->hasFile('images')&& $request->file('images')->isValid()){
+            $image = $request->file('images')->store('uploads', 'public');
+            $categories->images = $image;
         }
         $categories->name = $request->input('name');
-        $categories->update();
+        $categories->save();
         Session::flash('success', 'Update record #' . $categories->id . ' successfully');
         return redirect()->route('route_admin_category_list');
     }
@@ -49,16 +50,11 @@ class CategoriesController extends Controller
             $categories = Categories::find($id);
             if ($categories) {
                 $categories->delete();
-                Session::flash('success', ' Delete record #' . $categories->id . ' successfully');
                 return response()->json(['success' => true]);
             } else {
                 return response()->json(['error' => 'categories not found'], 404);
             }
         }
         return abort(404);
-        // $categories = Categories::find($id);
-        // $categories->delete();
-        // Session::flash('success', ' Delete record #' . $categories->id . ' successfully');
-        // return redirect()->route('route_admin_category_list');
     }
 }

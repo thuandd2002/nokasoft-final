@@ -47,10 +47,10 @@ class HomeController extends Controller
         );
     }
 
-    function productDetail($id, Request $request)
+    function productDetail($id)
     {
         $items = Products::find($id);
-        // dd($items->color);
+
         $colectionCategories = $this->_categories->get();
         $colectionSizes = $this->_sizes->get();
         $colectionColors = $this->_colors->get();

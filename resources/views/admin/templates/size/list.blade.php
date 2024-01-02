@@ -30,11 +30,9 @@
                             Categories Name
                         </th>
                         <th style="width: 30%">
-                            Team Members
+                           Image
                         </th>
-                        <th>
-                            Project Progress
-                        </th>
+                      
                         <th style="width: 8%" class="text-center">
                             Status
                         </th>
@@ -63,16 +61,6 @@
                                         <img alt="Avatar" class="img-fluid" width="50px" src="{{asset('storage/'.$item->image)}}">
                                     </li>
                                 </ul>
-                            </td>
-                            <td class="project_progress">
-                                <div class="progress progress-sm">
-                                    <div class="progress-bar bg-green" role="progressbar" aria-valuenow="57"
-                                        aria-valuemin="0" aria-valuemax="100" style="width: 57%">
-                                    </div>
-                                </div>
-                                <small>
-                                    57% Complete
-                                </small>
                             </td>
                             <td class="project-state">
                                 <span class="badge badge-success">Success</span>

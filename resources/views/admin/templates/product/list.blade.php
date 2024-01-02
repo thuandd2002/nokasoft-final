@@ -45,14 +45,15 @@
                         <th>
                             Size
                         </th>
-                        
+
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($items as $item)
                         <tr>
                             <td>
-                                <input type="checkbox"  class="product-checkbox" name="product_ids[]" value="{{ $item->id }}">
+                                <input type="checkbox" class="product-checkbox" name="product_ids[]"
+                                    value="{{ $item->id }}">
                             </td>
                             <td>
                                 <a>
@@ -72,31 +73,26 @@
                                 </ul>
                             </td>
                             <td>
-                                @foreach ($item->category as $cate)
-                                    <small>
-                                        {{ $cate->name }}
-                                    </small>
-                                @endforeach
+                                <small>
+                                    {{ $item->category->pluck('name')->implode(', ') }}
+                                </small>
                             </td>
                             <td>
-                                
-                                    <small>
-                                        {{ $item->price }}
-                                    </small>
-                               
+
+                                <small>
+                                    {{ $item->price }}
+                                </small>
+
                             </td>
                             <td>
                                 @foreach ($item->color as $colors)
-                                            <img alt="Avatar" class="table-avatar"
-                                                src="{{ asset('storage/' . $colors->image) }}">
+                                    <img alt="Avatar" class="table-avatar" src="{{ asset('storage/' . $colors->image) }}">
                                 @endforeach
                             </td>
                             <td>
-                                @foreach ($item->size as $size)
-                                    <small>
-                                        {{ $size->name . ',' }}
-                                    </small>
-                                @endforeach
+                                <small>
+                                    {{ $item->size->pluck('name')->implode(', ') }}
+                                </small>
                             </td>
 
                             <td class="project-state">
@@ -133,39 +129,39 @@
 </script>
 
 @section('scripts')
-<script>
-    $.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-    });
-    $(document).ready(function() {
-        $('#deleteMultiple').on('click', function() {
-            var productIds = $('.product-checkbox:checked').map(function() {
-                return $(this).val();
-            }).get();
-            console.log(productIds);
-            if (productIds.length > 0) {
-                $.ajax({
-                    url: '/admin/products/delete-multiple',
-                    type: 'DELETE',
-                    data: { 
-                        __tokens: '{{csrf_token()}}',
-                        product_ids: productIds
-                     },
-                    success: function(response) {
-                        console.log(response.message);
-                        location.reload();
-                        alert('Đã xóa sản phẩm thành công.');
-                    },
-                    error: function(error) {
-                        console.error('Xóa sản phẩm không thành công.', error);
-                    }
-                });
-            } else {
-                console.warn('Vui lòng chọn ít nhất một sản phẩm để xóa.');
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-    });
-  </script>
+        $(document).ready(function() {
+            $('#deleteMultiple').on('click', function() {
+                var productIds = $('.product-checkbox:checked').map(function() {
+                    return $(this).val();
+                }).get();
+                console.log(productIds);
+                if (productIds.length > 0) {
+                    $.ajax({
+                        url: '/admin/products/delete-multiple',
+                        type: 'DELETE',
+                        data: {
+                            __tokens: '{{ csrf_token() }}',
+                            product_ids: productIds
+                        },
+                        success: function(response) {
+                            console.log(response.message);
+                            location.reload();
+                            alert('Đã xóa sản phẩm thành công.');
+                        },
+                        error: function(error) {
+                            console.error('Xóa sản phẩm không thành công.', error);
+                        }
+                    });
+                } else {
+                    console.warn('Vui lòng chọn ít nhất một sản phẩm để xóa.');
+                }
+            });
+        });
+    </script>
 @endsection
