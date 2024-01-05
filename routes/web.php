@@ -58,7 +58,7 @@ Route::prefix('admin')->middleware(['auth.admin.middleware'])->group(
         Route::get('categories/detail/{id}', 'CategoriesController@detail')->name('route_admin_category_detail');
         Route::post('categories/update/{id}', 'CategoriesController@update')
             ->name('route_admin_category_update');
-        Route::delete('/categories/delete/{id}', 'CategoriesController@delete')->name('route_admin_category_delete');
+        Route::get('/categories/delete/{id}', 'CategoriesController@delete')->name('route_admin_category_delete');
         //products
         Route::get('products/list', 'ProductsController@listProducts')->name('route_admin_products_list');
         Route::match(['get', 'post'], 'product/add', 'ProductsController@add')->name('route_admin_products_add');
@@ -82,11 +82,6 @@ Route::prefix('admin')->middleware(['auth.admin.middleware'])->group(
         Route::post('colors/update/{id}', 'ColorsController@update')
             ->name('route_admin_colors_update');
         Route::get('colors/delete/{id}', 'ColorsController@delete')->name('route_admin_colors_delete');
-
-        //users
-        Route::get('users/list', 'AdminController@listUser')->name('route_admin_users_list');
-        Route::get('users/update/{id}', 'AdminController@detailUser')->name('route_admin_users_detail');
-        Route::post('users/update/{id}', 'AdminController@updateUser')->name('route_admin_users_update');
     }
 );
 
