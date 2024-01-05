@@ -21,7 +21,7 @@ class CustomerController extends Controller
         if ($request->isMethod('post')) {
             $rules = [
                 'name' => 'required',
-                'email' => 'required|email',
+                'email' => 'required|unique:users|email',
                 'password' => 'required',
                 'repassword' => 'required|same:password',
                 'phone' => 'required'
@@ -30,6 +30,7 @@ class CustomerController extends Controller
                 'password.required' => 'Please enter password',
                 'name.required' => 'Please enter name',
                 'email.required' => 'Please enter email',
+                'email.unique'=>'Email address already exists',
                 'phone.required' => 'Please enter phone',
                 'repassword.required' => 'Please entern confirm password',
             ];

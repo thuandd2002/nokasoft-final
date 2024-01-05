@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'thuanncoi2002@gmail.com',
             'roles'=>1,
             'password' => Hash::make('123456'),
+            'phone' => '123456',
         ]);
         $dataProducts = [
             [

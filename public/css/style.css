@@ -736,28 +736,8 @@ body.MakeFloatingCart div.floating-cart.moveToCart{
 		 -o-transition: all 200ms ease-out;
  		    transition: all 200ms ease-out;
 }
-div.cart-icon-top{
-	position:absolute;
-	background:#fff url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/cart.png") 0 -3px no-repeat;
-	margin:0;
-	width:21px;
-	height:3px;
-	z-index:1;
-	top: 140px;
-	left: 90px;
-}
-div.cart-icon-bottom{
-	position:absolute;
-	background:#fff url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/cart.png") 0 -3px no-repeat;
-	margin:0;
-	width:21px;
-	height:19px;
-	z-index:1;
-	top: 143px;
-	left: 90px;
-}
-body.MakeFloatingCart div.cart-icon-top{z-index:30;}
-body.MakeFloatingCart div.cart-icon-bottom{z-index:300;}	
+
+
 .cart-item{	
 	padding: 11px 0 5px 110px;
 	height: 62px;

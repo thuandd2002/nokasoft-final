@@ -40,7 +40,7 @@ class AdminController extends Controller
         ];
         $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()) {
-            return redirect('admin/login')->withErrors($validator);
+            return redirect()->route('admin/login')->withErrors($validator);
         } else {
             $email = $request->input('email');
             $password = $request->input('password');
@@ -48,7 +48,7 @@ class AdminController extends Controller
                 return redirect('admin');
             } else {
                 Session::flash('error', 'Email hoặc mật khẩu k đúng');
-                return redirect('admin/login');
+                return redirect()->route('admin/login');
             }
         }
     }
@@ -155,5 +155,16 @@ class AdminController extends Controller
         }
         
         return view('admin.auth.register');
+    }
+
+    function listUser() {
+        $user = User::paginate(7);
+       return view('admin.templates.user.list', array('user' => $user));
+    }
+
+    function detailUser($id) {
+        $user = User::find($id);
+      
+       return view('admin.templates.user.detail', array('user' => $user));
     }
 }
