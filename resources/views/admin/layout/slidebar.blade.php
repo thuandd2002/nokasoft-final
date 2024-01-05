@@ -122,14 +122,6 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a href="{{route('route_admin_users_list')}}" class="nav-link">
-              <i class="fa-regular fa-user"></i>
-              <p>
-                User Authorization
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
             <a href="{{route('admin/logout')}}" class="nav-link">
               <i class="fas fa-sign-out-alt"></i>
               <p>

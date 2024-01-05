@@ -44,17 +44,13 @@ class CategoriesController extends Controller
         Session::flash('success', 'Update record #' . $categories->id . ' successfully');
         return redirect()->route('route_admin_category_list');
     }
-    function delete($id, Request $request) {
+    
 
-        if ($request->ajax()) {
-            $categories = Categories::find($id);
-            if ($categories) {
-                $categories->delete();
-                return response()->json(['success' => true]);
-            } else {
-                return response()->json(['error' => 'categories not found'], 404);
-            }
+        function delete($id) {
+            $cate = Categories::find($id);
+            $cate->delete();
+            Session::flash('success', ' Delete record #' . $cate->id . ' successfully');
+            return redirect()->route('route_admin_category_list');
         }
-        return abort(404);
-    }
+    
 }

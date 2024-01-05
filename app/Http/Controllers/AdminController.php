@@ -156,15 +156,4 @@ class AdminController extends Controller
         
         return view('admin.auth.register');
     }
-
-    function listUser() {
-        $user = User::paginate(7);
-       return view('admin.templates.user.list', array('user' => $user));
-    }
-
-    function detailUser($id) {
-        $user = User::find($id);
-      
-       return view('admin.templates.user.detail', array('user' => $user));
-    }
 }
