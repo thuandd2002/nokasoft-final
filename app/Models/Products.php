@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 class Products extends Model
 {
     use HasFactory;
+
     protected $table = "products";
     protected $fillable = ['id','name','description','image','price'];
 

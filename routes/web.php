@@ -41,10 +41,10 @@ Route::prefix('customer')->group(
 Route::prefix('admin')->group(
     function () {
         Route::match(['get','post'],'register','AdminController@register')->name('route_admin_register');
-        Route::get('/login', 'AdminController@login')->name('admin_login');
-        Route::post('/login', 'AdminController@postLogin')->name('admin/login');
+        Route::get('login', 'AdminController@login')->name('admin_login');
+        Route::post('login', 'AdminController@postLogin')->name('admin/login');
         Route::get('/', 'AdminController@admin');
-        Route::get('/logout', "AdminController@getLogout")->name('admin/logout');
+        Route::get('logout', "AdminController@getLogout")->name('admin/logout');
         Route::match(['get', 'post'], 'forgot-password', 'AdminController@forgotPassword')->name('route_admin_forgot_password');
         Route::match(['get', 'post'], 'change-password/{id}/{remember_token}/', 'AdminController@changePassword')->name('route_admin_change_password');
     }
@@ -56,33 +56,32 @@ Route::prefix('admin')->middleware(['auth.admin.middleware'])->group(
         Route::get('categories/list', 'CategoriesController@list')->name('route_admin_category_list');
         Route::match(['get', 'post'], 'categories/add', 'CategoriesController@add')->name('route_admin_category_add');
         Route::get('categories/detail/{id}', 'CategoriesController@detail')->name('route_admin_category_detail');
-        Route::post('/categories/update/{id}', 'CategoriesController@update')
+        Route::post('categories/update/{id}', 'CategoriesController@update')
             ->name('route_admin_category_update');
-        Route::delete('/categories/delete/{id}', 'CategoriesController@delete')->name('route_admin_category_delete');
+        Route::get('/categories/delete/{id}', 'CategoriesController@delete')->name('route_admin_category_delete');
         //products
         Route::get('products/list', 'ProductsController@listProducts')->name('route_admin_products_list');
         Route::match(['get', 'post'], 'product/add', 'ProductsController@add')->name('route_admin_products_add');
         Route::get('products/detail/{id}', 'ProductsController@detail')->name('route_admin_products_detail');
-        Route::post('/products/update/{id}', 'ProductsController@update')
+        Route::post('products/update/{id}', 'ProductsController@update')
             ->name('route_admin_products_update');
-        Route::get('/products/delete/{id}', 'ProductsController@delete')->name('route_admin_products_delete');
+        Route::get('products/delete/{id}', 'ProductsController@delete')->name('route_admin_products_delete');
         Route::delete('products/delete-multiple', 'ProductsController@deleteMutiple')->name('products.delete.multiple');;
         //endproducts
         //sizes
         Route::get('sizes/list', 'SizesController@list')->name('route_admin_sizes_list');
         Route::match(['get', 'post'], 'sizes/add', 'SizesController@add')->name('route_admin_sizes_add');
         Route::get('sizes/detail/{id}', 'SizesController@detail')->name('route_admin_sizes_detail');
-        Route::post('/sizes/update/{id}', 'SizesController@update')
+        Route::post('sizes/update/{id}', 'SizesController@update')
             ->name('route_admin_sizes_update');
-        Route::get('/sizes/delete/{id}', 'SizesController@delete')->name('route_admin_sizes_delete');
+        Route::get('sizes/delete/{id}', 'SizesController@delete')->name('route_admin_sizes_delete');
         //c
         Route::get('colors/list', 'ColorsController@list')->name('route_admin_colors_list');
         Route::match(['get', 'post'], 'colors/add', 'ColorsController@add')->name('route_admin_colors_add');
         Route::get('colors/detail/{id}', 'ColorsController@detail')->name('route_admin_colors_detail');
-        Route::post('/colors/update/{id}', 'ColorsController@update')
+        Route::post('colors/update/{id}', 'ColorsController@update')
             ->name('route_admin_colors_update');
-        Route::get('/colors/delete/{id}', 'ColorsController@delete')->name('route_admin_colors_delete');
+        Route::get('colors/delete/{id}', 'ColorsController@delete')->name('route_admin_colors_delete');
     }
 );
-
 

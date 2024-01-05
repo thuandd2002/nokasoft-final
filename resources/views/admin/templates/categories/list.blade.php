@@ -31,7 +31,7 @@
                         <th style="width: 30%">
                             Team Members
                         </th>
-                      
+
                         <th style="width: 20%">
                         </th>
                     </tr>
@@ -59,7 +59,7 @@
                                     </li>
                                 </ul>
                             </td>
-                         
+
                             <td class="project-actions text-right">
                                 <a class="btn btn-info btn-sm"
                                     href="{{ route('route_admin_category_detail', ['id' => $item->id]) }}">
@@ -67,13 +67,12 @@
                                     </i>
                                     Edit
                                 </a>
-                                {{-- <a onclick="return myFunction()" class="btn btn-danger btn-sm" href="{{route('route_admin_category_delete',['id'=>$item->id])}}">
-                                    <i class="fas fa-trash"></i>
+                                <a onclick="return myFunction()" class="btn btn-danger btn-sm"
+                                    href="{{ route('route_admin_category_delete', ['id' => $item->id]) }}">
+                                    <i class="fas fa-trash">
+                                    </i>
                                     Delete
-                                </a> --}}
-                                <button class="btn btn-danger btn-sm btn-del"
-                                    data-categories-id="{{ $item->id }}">Delete</button>
-                                @csrf
+                                </a>
                             </td>
                         </tr>
                     @endforeach
@@ -89,32 +88,4 @@
         if (!confirm("Are You Sure to delete this"))
             event.preventDefault();
     }
-</script>
-<script>
-    $(document).ready(function() {
-        $('.btn-del').on('click', function() {
-            var categoriesId = $(this).data('categories-id');
-
-            if (confirm('Are you sure you want to delete this categories?')) {
-                $.ajax({
-                    type: 'DELETE',
-                    url: '/admin/categories/delete/' + categoriesId,
-                    data: {
-                        '_token': '{{ csrf_token() }}',
-                    },
-                    success: function(data) {
-                        if (data.success) {
-                            $(`#${categoriesId}`).hide()
-                            alert('Deleted Successfullye ')
-                        } else {
-                            alert('Failed to delete user');
-                        }
-                    },
-                    error: function(data) {
-                        alert('Failed to delete Categories');
-                    }
-                });
-            }
-        });
-    });
 </script>

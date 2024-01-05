@@ -46,7 +46,6 @@ class HomeController extends Controller
             ]
         );
     }
-
     function productDetail($id)
     {
         $items = Products::find($id);
@@ -68,12 +67,12 @@ class HomeController extends Controller
     public function search(Request $request)
     {
         $keyword = $request->input('keyword');
-        $products = Products::where('name', 'like', "%$keyword%")->get();
+        $products = Products::where('name', 'like', "%$keyword%")->paginate(8);
         $itemsCategories = $this->_categories->get();
         $itemsSizes = $this->_sizes->get();
         $itemsColors = $this->_colors->get();
 
-        return view('client.templates.product.search', compact('products', 'keyword', 'itemsCategories', 'itemsSizes', 'itemsColors'));
+        return view('client.templates.product.search', ['products' =>$products, 'keyword'=>  $keyword, 'itemsCategories'=> $itemsCategories, 'itemsSizes'=> $itemsSizes, 'itemsColors'=>$itemsColors]);
     }
 
     function searchByCategory($categoryName)
