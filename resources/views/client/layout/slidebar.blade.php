@@ -34,7 +34,4 @@
             @endforeach
         </ul>
     </div>
-    
-     <h3>PRICE RANGE</h3>
-     <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/price-range.png" alt="" />
 </div>
