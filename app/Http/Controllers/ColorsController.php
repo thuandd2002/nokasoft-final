@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use \App\Models\Colors;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Storage;
 use App\Models\Categories;
 class ColorsController extends Controller
 {

@@ -9,7 +9,7 @@ use App\Models\Colors;
 use App\Models\Products;
 use App\Models\Sizes;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Collection;
+
 
 class ProductsController extends Controller
 {
