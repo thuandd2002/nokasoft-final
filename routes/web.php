@@ -29,24 +29,30 @@ Route::get('/search-by-color/{name}', 'HomeController@searchByColor')->name('pro
 
 Route::prefix('customer')->group(
     function () {
-        Route::match(['get','post'],'register','CustomerController@register')->name('route.customer.register');
+        Route::get('register','CustomerController@register')->name('route.customer.register');
+        Route::post('register','CustomerController@postRegister');
         Route::get('login', 'CustomerController@login')->name('route.customer.login');
         Route::post('login', 'CustomerController@postLogin')->name('route.customer.login');
         Route::get('logout', "CustomerController@getLogout")->name('route.customer.logout');
-        Route::match(['get', 'post'], 'forgot-password', 'CustomerController@forgotPassword')->name('route.customer.forgot');
-        Route::match(['get', 'post'], 'change-password/{id}/{remember_token}/', 'CustomerController@changePassword')->name('route.customer.changePassword');
+        Route::get('forgot-password', 'CustomerController@forgotPassword')->name('route.customer.forgot');
+        Route::post('forgot-password', 'CustomerController@postForgotPassword');
+        Route::get('change-password/{id}/{remember_token}/', 'CustomerController@changePassword')->name('route.customer.changePassword');
+        Route::post('change-password/{id}/{remember_token}/', 'CustomerController@postChangePassword');
     }
 );
 
 Route::prefix('admin')->group(
     function () {
-        Route::match(['get','post'],'register','AdminController@register')->name('route_admin_register');
+        Route::get('register','AdminController@register')->name('route_admin_register');
+        Route::post('register','AdminController@postRegister');
         Route::get('login', 'AdminController@login')->name('admin_login');
         Route::post('login', 'AdminController@postLogin')->name('admin/login');
-        Route::get('/', 'AdminController@admin');
+        Route::get('/', 'AdminController@admin')->name('admin');
         Route::get('logout', "AdminController@getLogout")->name('admin/logout');
-        Route::match(['get', 'post'], 'forgot-password', 'AdminController@forgotPassword')->name('route_admin_forgot_password');
-        Route::match(['get', 'post'], 'change-password/{id}/{remember_token}/', 'AdminController@changePassword')->name('route_admin_change_password');
+        Route::get('forgot-password', 'AdminController@forgotPassword')->name('route_admin_forgot_password');
+        Route::post('forgot-password', 'AdminController@postForgotPassword');
+        Route::get( 'change-password/{id}/{remember_token}/', 'AdminController@changePassword')->name('route_admin_change_password');
+        Route::post( 'change-password/{id}/{remember_token}/', 'AdminController@postChangePassword');
     }
 );
 
