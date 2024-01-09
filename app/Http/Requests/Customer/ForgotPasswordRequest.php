@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\Customer;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class ForgotPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -22,8 +22,7 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email',
-            'password' => 'required'
+            'email' => 'required|email|exists:users',
         ];
     }
 
@@ -31,7 +30,7 @@ class LoginRequest extends FormRequest
     {
         return [
             'email.required' => 'Mời bạn nhập vào email',
-            'password.required' => 'Mời bạn nhập password',
+            'email.exists' => 'Email không tồn tại trong hệ thống',
         ];
     }
 }

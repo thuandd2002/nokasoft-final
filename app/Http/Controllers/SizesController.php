@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 use \App\Models\Sizes;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Storage;
-use App\Models\Categories;
+
 class SizesController extends Controller
 {
     protected $_size;

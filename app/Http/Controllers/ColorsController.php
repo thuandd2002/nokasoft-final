@@ -6,13 +6,12 @@ use Illuminate\Http\Request;
 use \App\Models\Colors;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Storage;
 use App\Models\Categories;
 class ColorsController extends Controller
 {
     function list(){
         $items = Colors::all();
-        return view('admin/templates/color.list',['items' => $items]);
+        return view('admin.templates.color.list',['items' => $items]);
     }
     public function add(Request $request){
         if ($request->isMethod('POST')) {
@@ -31,8 +30,12 @@ class ColorsController extends Controller
     }
 
     function detail($id, Request $request) {
-        $items=DB::table('colors')->where('id',$id)->first();
-        return view('admin.templates.color.detail',['items'=>$items]);
+        $item = Categories::find($id);
+
+        if (!$item) {
+            abort(404); 
+        }
+        return view('admin.templates.color.detail',['items'=>$item]);
     }
 
     function update($id, Request $request){
@@ -47,7 +50,7 @@ class ColorsController extends Controller
         return redirect()->route('route_admin_colors_list');
     }
 
-    function delete($id, Request $request) {
+    function delete($id) {
         $colors = Colors::find($id);
         $colors->delete();
         Session::flash('success', ' Delete record #' . $colors->id . ' successfully');

@@ -9,7 +9,7 @@ use App\Models\Colors;
 use App\Models\Products;
 use App\Models\Sizes;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Collection;
+
 
 class ProductsController extends Controller
 {
@@ -26,24 +26,33 @@ class ProductsController extends Controller
     function add(Request $request)
     {
         if ($request->isMethod('POST')) {
-            $selectedSize = $request->input('size');
-            $selectedColor = $request->input('color');
-            $selectedCategorie = $request->input('categorie');
-            $product = new Products;
-            if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                $image = $request->file('image')->store('uploads', 'public');
-                $product->image = $image;
-            }
-            $product->name = $request->input('name');
-            $product->price = $request->input('price');
-            $product->save();
+            DB::beginTransaction();
+            try {
+                $selectedSize = $request->input('size');
+                $selectedColor = $request->input('color');
+                $selectedCategorie = $request->input('categorie');
+                $product = new Products;
+                if ($request->hasFile('image') && $request->file('image')->isValid()) {
+                    $image = $request->file('image')->store('uploads', 'public');
+                    $product->image = $image;
+                }
+                $product->name = $request->input('name');
+                $product->price = $request->input('price');
+                $product->save();
 
-            $product->size()->attach($selectedSize);
-            $product->color()->attach($selectedSize);
-            $product->category()->attach($selectedCategorie);
+                $product->size()->attach($selectedSize);
+                $product->color()->attach($selectedSize);
+                $product->category()->attach($selectedCategorie);
+                DB::commit();
 
-            Session::flash('success', 'Product added successfully');
-            return redirect()->route('route_admin_products_list');
+                Session::flash('success', 'Product added successfully');
+                return redirect()->route('route_admin_products_list');
+            } catch (\Exception $e) {
+
+                DB::rollBack();
+                Session::flash('error', 'Failed to add product: ' . $e->getMessage());
+                return redirect()->back();
+            };
         }
         $sizes = Sizes::all();
         $colors = Colors::all();
@@ -74,39 +83,85 @@ class ProductsController extends Controller
 
     function update($id, Request $request)
     {
-        $products = Products::find($id);
-        $selectedSize = $request->input('size');
-        $selectedColor = $request->input('color');
-        $selectedCategorie = $request->input('categorie');
-        if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            $image = $request->file('image')->store('uploads', 'public');
-            $products->image = $image;
-        }
-        $products->name = $request->input('name');
-        $products->price = $request->input('price');
-        $products->save();
+        DB::beginTransaction();
+        try {
+            $products = Products::find($id);
 
-        $products->size()->sync($selectedSize);
-        $products->color()->sync($selectedColor);
-        $products->category()->sync($selectedCategorie);
-        Session::flash('success', 'Update record #' . $products->id . ' successfully');
-        return redirect()->route('route_admin_products_list');
+            if (!$products) {
+                abort(404);
+            }
+            $selectedSize = $request->input('size');
+            $selectedColor = $request->input('color');
+            $selectedCategorie = $request->input('categorie');
+            if ($request->hasFile('image') && $request->file('image')->isValid()) {
+                $image = $request->file('image')->store('uploads', 'public');
+                $products->image = $image;
+            }
+            $products->name = $request->input('name');
+            $products->price = $request->input('price');
+            $products->save();
+            $products->size()->sync($selectedSize);
+            $products->color()->sync($selectedColor);
+            $products->category()->sync($selectedCategorie);
+            DB::commit();
+            Session::flash('success', 'Update record #' . $products->id . ' successfully');
+            return redirect()->route('route_admin_products_list');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            // Log the error or handle it as needed
+            Session::flash('error', 'Failed to update product: ' . $e->getMessage());
+            return redirect()->back();
+        }
     }
 
     function delete($id)
     {
-        $colors = Products::find($id);
-        $colors->delete();
-        Session::flash('success', ' Delete record #' . $colors->id . ' successfully');
-        return redirect()->route('route_admin_products_list');
+        $product = Products::find($id);
+        if (!$product) {
+            abort(404);
+        }
+        DB::beginTransaction();
+        try {
+
+            $product->delete();
+
+            $product->size()->detach();
+            $product->color()->detach();
+            $product->category()->detach();
+
+            DB::commit();
+
+            Session::flash('success', 'Delete record #' . $id . ' successfully');
+            return redirect()->route('route_admin_products_list');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Session::flash('error', 'Failed to delete product: ' . $e->getMessage());
+            return redirect()->back();
+        }
     }
+
     function deleteMutiple(Request $request)
     {
         $productIds = $request->input('product_ids');
-    
-        // Xóa các sản phẩm có ID nằm trong mảng $productIds
-        Products::whereIn('id', $productIds)->delete();
-    
-        return response()->json(['message' => 'Đã xóa sản phẩm thành công.']);
+        DB::beginTransaction();
+        try {
+            Products::whereIn('id', $productIds)->delete();
+            foreach ($productIds as $productId) {
+                $product = Products::find($productId);
+                if ($product) {
+                    $product->size()->detach();
+                    $product->color()->detach();
+                }
+            }
+            DB::commit();
+
+            return response()->json(['message' => 'Đã xóa sản phẩm thành công.']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json(['message' => 'Lỗi khi xóa sản phẩm: ' . $e->getMessage()], 500);
+        }
     }
 }

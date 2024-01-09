@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\Customer;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class ChangePasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -19,19 +19,18 @@ class LoginRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
+            'confirmPassword' => 'required|same:password',
         ];
     }
-
     public function messages()
     {
         return [
-            'email.required' => 'Mời bạn nhập vào email',
-            'password.required' => 'Mời bạn nhập password',
+            'password.required' => 'Please enter password',
+            'confirmPassword.required' => 'Please entern confirm password',
         ];
     }
 }
